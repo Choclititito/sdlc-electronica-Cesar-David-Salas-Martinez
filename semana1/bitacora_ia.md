@@ -1,9 +1,12 @@
 # BITACORA IA  
 
 ##  Entrada Dia 1  
-En este dia le di a la IA el siguiente promt " Explicame varias funciones puras sobre reading con type hints completos, explicame como funcionan cada una de estas y mas informacion cobre las funciones puras Reading, aqui esta el codigo en el que te basaras:"
+En este dia le di a la IA el siguiente promt " Explicame varias funciones puras sobre reading con type hints completos, explicame como funcionan cada una de estas y mas informacion cobre las funciones puras Reading, aqui esta el codigo en el que te basaras:"  
+
 adjuntando el codigo del ejercicio, me dio 4 ejemplos de los cuales use 3 y rechace 1.  
--1. Función pura de validación  : Esta la acepte ya que me parecia buen ejemplo para ver como recibir un valor boleano  
+
+-1. Función pura de validación  : Esta la acepte ya que me parecia buen ejemplo para ver como recibir un valor boleano.  
+
 -2 Función pura de transformación (Retorna un NUEVO objeto): Tambien la acepte, ya que me parecio bueno el saber como
 hacer un cambio en el valor que te arroja dependiendo el tipo  
 
