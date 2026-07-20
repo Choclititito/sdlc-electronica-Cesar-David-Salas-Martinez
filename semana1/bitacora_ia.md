@@ -23,3 +23,23 @@ La IA me dio los 4 test, de los cuales acepte los 2 sin muchos cambios y 2 donde
 
 -2 test_conteo_de_ciclos(): Aqui igualmente agregue verificacion de el numero del conteo despues de cada transicion.  
 
+## Entrada dia 3  
+Use este prompt: "Basandote en el siguiente codigo, dame un ejemplo correcto y uno incorrecto de los 3 primero principios SOLID" adjuntando el codigo de ejemplo  
+
+Me dio los 6 ejemplos de los cuales use 4 y 2 los use de base.  
+
+- SmartSensor: cambie los datos que mandaba la función, para poder hacer los test mas fácilmente.
+
+- TemperatureSensor: Este tenia un mismo nombre otra de las clases y daba error.
+
+Después le mande el prompt: "Haz 2 testeos para cada ejemplo correcto de los principios"  
+
+De los 6 test, acepte 4, modifique 1 y rechace 1.  
+
+-def test_humidity_sensor_respeta_firma_liskov: Aquí tuve que arreglar unos nombres de clases que tenia mal por los errores corregidos anteriormente.  
+
+-def test_sensor_reader_retorna_tipo_correcto(): Este lo rechace por ser muy similar al test que esta junto a el.  
+
+## Entrada dia 4
+
+
