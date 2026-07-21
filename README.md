@@ -12,6 +12,31 @@ la programacion siempre me ha interesado pero siempre he sentido algo disperso m
 cercania al hardware, en este curso espero aprender mas sobre estas conexiones mas cercanas entre la electronuca y la programacion, a su vez de buenas practicas 
 de trabajo en programacion.  
 
+## Instalación:  
+Para poder instalar el repositorio desde la terminal se puede usar el comando:  
+
+git clone https://github.com/Choclititito/sdlc-electronica-Cesar-David-Salas-Martinez  
+
+Herramientas:  
+-Visual Studio Code  
+-Python  
+-Git  
+-WSL2  
+-Pytest  
+-Ruff  
+
+## Como correr los tests:  
+Para poder correrlos hay que usar el comando:  
+python -m pytest "ubicacion del archivo" -v  
+Esta ubicacion dependiendo de donde tengas la consola ubicada, esto pudiendolo cambiar con el comando:  
+cd "ubicacion deseada"  
+
+Igualmente con el ruff check "ubicacion del archivo"  
+
+## Reflexión SOLID:  
+Los principios SOLID, aunque me costo entenderlos al principio, despues pude hacerlo, gracias a entender los fundamentos de la programacion enfocada en objetos, ya con esa informacion los pude entender mejor, me parecen principios que ayudan bastante a tener codigos que se pueda trabajar en equipo, y escalables sin tener tantos problemas, en comparacion con otras formas de programar.  
+
+
 Aqui una imagen que me gusto:  
 
 <img width="512" height="512" alt="miau" src="https://github.com/user-attachments/assets/09f9a650-147c-4e30-8ea0-d09c8c97bfb7" />
