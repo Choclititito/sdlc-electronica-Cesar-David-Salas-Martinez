@@ -51,6 +51,20 @@ Me ayudo para poder corregir algunos de mis test que tenian problemas de como tr
 
 Le modifique algunos test, ademas de agregar el de test_sensor_complejo.  
 
-## Entrada dia 5
+## Entrada dia 5  
+Use el prompt: "Necesito resolver esta situacion tienes un driver UART en C estilo embebido: buffers globales, parsing de dos protocolos en funciones sueltas, logging mezclado con comunicación, imposible de testear en aislamiento e imposible de instanciar dos veces. Tu misión: reimplementarlo en Python moderno con SOLID Este cuenta con varias partes:(Las partes especificadas en la actividad), ademas necesito que me des test para cada una de las partes"  
+
+Lo que me dio la IA fue una buena estructura base, donde tuve que hacer algunos cambios para su mejor funcionamiento:  
+
+-Cambiar la forma de importar las demas modulos, ya que habia problemas por la formar en la que lo habia guardado.  
+
+-Reescribir algunos de los test, ya que no los comprendia del todo, intentando simplificarlos y entenderlos con la ia de copilot.  
+
+-Usar la IA de copilot para cambiar algunas funciones y ver que soluciones distintas me daba.  
+
+El uso de la IA de copilot dentro del programa se sintio raro dentro de lo que cabe, por como aveces pensaba soluciones diferentes a lo que yo tenia en mente, pero fue de ayuda para darme una idea de por donde podria ir mi codigo, aunque aveces sentia que se complicaba mas de lo necesario.  
+
+
+
 
 
