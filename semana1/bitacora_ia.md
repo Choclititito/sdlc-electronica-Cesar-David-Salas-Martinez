@@ -40,6 +40,17 @@ De los 6 test, acepte 4, modifique 1 y rechace 1.
 
 -def test_sensor_reader_retorna_tipo_correcto(): Este lo rechace por ser muy similar al test que esta junto a el.  
 
-## Entrada dia 4
+## Entrada dia 4  
+Use el prompt: "Completa la biblioteca en el siguiente codigo ISP: divide una interfaz gorda (read/write/calibrate/reset) en Readable, Writable, Calibratable. DIP: usa Protocol para que DataProcessor dependa de una abstracción DataRepository:" adjuntando el codigo del PDF.  
+
+Me proporciono un codigo que me tuve que modificar para poder hacer un mejor testeo, agregando en su mayoria salidas de datos especificas (bool, str, float).  
+
+Luego use un prompt para que me ayudara a terminar mis tests: "Hice estos cambios en el codigo, que test me podrian ayudar, aparte de los siguientes" con el codigo modificado y algunos test.  
+
+Me ayudo para poder corregir algunos de mis test que tenian problemas de como trabajar con las clases de Protocol, ademas de sumar algunos.  
+
+Le modifique algunos test, ademas de agregar el de test_sensor_complejo.  
+
+## Entrada dia 5
 
 
