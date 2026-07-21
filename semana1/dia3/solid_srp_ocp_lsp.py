@@ -26,15 +26,15 @@ class AnomalyDetector:
 
 class SensorReader:
     def read_data(self) -> float:
-        return 25.5
+        return 25.5 #Regresa un valor para simular una lectura
 
 class DatabaseLogger:
     def save(self, data: float) -> str:
-        return f"Guardando {data} en BD..."
+        return f"Guardando {data} en BD..." #Regresa un mensaje para confirmar
 
 class EmailAlerter:
     def send_alert(self) -> str:
-        return "Enviando correo de alerta..."
+        return "Enviando correo de alerta..." #regresa un mensaje para confirmar
 
 #Ejemplo incorrecto: Se usa una sola clase para varios puntos diferentes
 
@@ -59,20 +59,18 @@ class SmartSensor:
 #Ejemplo correcto: Es facil el poder agregar alguna otra funcion parecida, sin modificar el codigo base
 from abc import ABC, abstractmethod
 
-class AlertStrategy(ABC):
+class AlertStrategy(ABC): #Se usa el ejemplo proporcionado
     @abstractmethod
     def send(self, message: str) -> None:
         pass
 
-class ConsoleAlert(AlertStrategy):
+class ConsoleAlert(AlertStrategy): #Se ejemplifica como seria el agregado de estas funcionas que menciona el ejemplo
     def send(self, message: str) -> None:
         print(f"Consola: {message}")
 
 class EmailAlert(AlertStrategy):
     def send(self, message: str) -> None:
         print(f"Email: {message}")
-
-# Para agregar WhatsApp, solo creamos class WhatsAppAlert(AlertStrategy) sin tocar lo anterior.
 
 
 #Ejemplo incorrecto: Se debe de modificar el codigo base para agregar funciones nuevas
@@ -82,7 +80,7 @@ class AlertSystem:
             print(f"Consola: {message}")
         elif alert_type == "email":
             print(f"Enviando Email: {message}")
-        # ¡Si queremos WhatsApp, tenemos que modificar este código directamente!
+#El codigo se seguiria alargando si se quieren agregar mas funciones
 
 """L: Liskov Substitution Principle"""
 #Ejemplo correcto
