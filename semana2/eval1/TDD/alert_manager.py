@@ -11,7 +11,7 @@ from typing import Dict, List, Tuple
 from anomaly_detector import AnomalyEvent, AnomalyType
 
 
-class AlertStrategy(ABC):
+class AlertStrategy(ABC): # Contrato abstracto para cualquier canal de notificación
     """Contrato abstracto para cualquier canal de notificación de alertas."""
 
     @abstractmethod
@@ -19,7 +19,7 @@ class AlertStrategy(ABC):
         raise NotImplementedError
 
 
-class ConsoleAlertStrategy(AlertStrategy):
+class ConsoleAlertStrategy(AlertStrategy): # Aviso de alerta por consola
     """Envía la alerta a la salida estándar (stdout)."""
 
     def send(self, event: AnomalyEvent) -> None:
@@ -33,7 +33,7 @@ class ConsoleAlertStrategy(AlertStrategy):
         )
 
 
-class FileAlertStrategy(AlertStrategy):
+class FileAlertStrategy(AlertStrategy): # Escribe alertas en un archivo de log
     """Escribe cada alerta como una línea nueva en un archivo de log (append)."""
 
     def __init__(self, filepath: str):
@@ -51,7 +51,7 @@ class FileAlertStrategy(AlertStrategy):
         )
 
 
-class AlertManager:
+class AlertManager: 
     """Orquesta el envío de una anomalía a todas las estrategias registradas,
     evitando reenviar la misma alerta mientras la anomalía siga activa (HU-04)."""
 

@@ -1,5 +1,5 @@
 """SensorReading: representa una lectura de temperatura/humedad de un sensor IoT (HU-01)."""
-
+#Importaciones de los datos deseados
 from dataclasses import dataclass
 from datetime import datetime
 from numbers import Real
@@ -18,23 +18,23 @@ class InvalidReadingError(ValueError):
 
 
 @dataclass(frozen=True)
-class SensorReading:
+class SensorReading: # Se leen los datos que se reciben del sensor y se validan
     sensor_id: str
     temperature: float
     humidity: float
     timestamp: datetime
 
-    def __post_init__(self):
+    def __post_init__(self): # Validación de los datos de la lectura, con casos de error
         if not self.sensor_id or not isinstance(self.sensor_id, str):
             raise InvalidReadingError("sensor_id no puede estar vacío")
         if not isinstance(self.temperature, Real) or isinstance(self.temperature, bool):
-            raise InvalidReadingError(f"temperature debe ser numérica, recibido: {self.temperature!r}")
+            raise InvalidReadingError(f"temp debe ser numérica {self.temperature!r}")
         if not isinstance(self.humidity, Real) or isinstance(self.humidity, bool):
-            raise InvalidReadingError(f"humidity debe ser numérica, recibido: {self.humidity!r}")
+            raise InvalidReadingError(f"humidity debe ser numérica {self.humidity!r}")
         if not isinstance(self.timestamp, datetime):
             raise InvalidReadingError("timestamp debe ser una instancia de datetime")
 
-    def is_valid(self) -> bool:
+    def is_valid(self) -> bool: 
         """Indica si el dato está dentro de un rango físico plausible.
         Una lectura inválida se descarta para el análisis de anomalías (HU-01)."""
         return (
@@ -42,7 +42,7 @@ class SensorReading:
             and MIN_HUMIDITY <= self.humidity <= MAX_HUMIDITY
         )
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict: # Serializa la lectura a un diccionario, útil para logging o JSON
         return {
             "sensor_id": self.sensor_id,
             "temperature": self.temperature,
