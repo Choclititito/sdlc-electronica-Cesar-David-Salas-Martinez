@@ -71,7 +71,7 @@ And el efecto actual se mantiene activo sin saltar al siguiente.
 Casos Borde Cubiertos (Edge Cases): Excelente cobertura física. No solo evalúa la pulsación ideal, sino que blinda al sistema contra el ruido al soltar el botón (release bouncing), pulsaciones dejadas presas por error (long press) y pulsaciones múltiples intencionales rápidas.  
 
 
-US-02: Entrada de audio y prevención de ruidos   
+# US-02: Entrada de audio y prevención de ruidos   
 
 Como músico, quiero poder conectar y desconectar mi instrumento mediante un cable jack 6.3mm macho sin que se generen picos de ruido en la señal, para evitar sonidos molestos en vivo o dañar los altavoces.  
 
