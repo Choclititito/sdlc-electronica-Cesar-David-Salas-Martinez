@@ -3,6 +3,7 @@
 import json
 from typing import Any
 
+
 class DataRecorder: #Clase para guardar los datos en un archivo
     def __init__(self, filepath: str) -> None:
         self._filepath = filepath

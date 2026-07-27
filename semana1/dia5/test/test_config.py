@@ -1,8 +1,9 @@
 #test_config.py
 #Importamos los modulos desde la carpeta uart_driver y otras paquetes necesarios para las pruebas
-import pytest
 from dataclasses import FrozenInstanceError
-from uart_driver.config import UartConfig #Importamos la configuracion
+
+import pytest
+from uart_driver.config import UartConfig  #Importamos la configuracion
 
 
 def test_config_creacion_valida(): #Aqui se prueba la creacion de un objeto UartConfig con valores validos

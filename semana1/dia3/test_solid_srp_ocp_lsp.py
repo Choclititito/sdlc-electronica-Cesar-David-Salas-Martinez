@@ -1,8 +1,15 @@
 """Testeos de los ejemplos correctos"""
 
 
-from solid_srp_ocp_lsp import SensorReader, DatabaseLogger, EmailAlerter, AlertStrategy, ConsoleAlert, EmailAlert, TemperatureSensor, HumiditySensor
-
+from solid_srp_ocp_lsp import (
+    AlertStrategy,
+    ConsoleAlert,
+    EmailAlert,
+    EmailAlerter,
+    HumiditySensor,
+    SensorReader,
+    TemperatureSensor,
+)
 
 """Primer principio S - Principio de Responsabilidad Unica"""
 

@@ -1,5 +1,6 @@
-from typing import Protocol
 from dataclasses import dataclass
+from typing import Protocol
+
 
 # Estructura de datos básica para el ejemplo
 @dataclass

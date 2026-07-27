@@ -2,10 +2,13 @@
 #Importamos los modulos desde la carpeta uart_driver y otras paquetes necesarios para las pruebas
 
 import pytest
-from uart_driver.config import UartConfig #Importamos la configuracion
-from uart_driver.parsers import ModbusParser #Importamos el parser que vamos a usar para las pruebas
-from uart_driver.device import UartDevice #Importamos la parte de device como la conexion
-
+from uart_driver.config import UartConfig  #Importamos la configuracion
+from uart_driver.device import (
+    UartDevice,  #Importamos la parte de device como la conexion
+)
+from uart_driver.parsers import (
+    ModbusParser,  #Importamos el parser que vamos a usar para las pruebas
+)
 
 
 def test_device_flujo_conexion(): # Probamos el flujo de conexion y desconexion del dispositivo UART

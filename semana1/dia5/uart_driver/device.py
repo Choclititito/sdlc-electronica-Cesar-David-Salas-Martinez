@@ -1,7 +1,12 @@
 # device.py
-from uart_driver.config import UartConfig #Importamos los datos de configuracion del uart
-from uart_driver.parsers import MessageParser #Importamos la clase abstracta de los analizadores de mensajes
 from typing import Any
+
+from uart_driver.config import (
+    UartConfig,  #Importamos los datos de configuracion del uart
+)
+from uart_driver.parsers import (
+    MessageParser,  #Importamos la clase abstracta de los analizadores de mensajes
+)
 
 
 class UartDevice:

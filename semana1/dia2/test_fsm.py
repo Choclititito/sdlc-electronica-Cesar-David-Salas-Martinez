@@ -1,4 +1,7 @@
-from fsm_demo import TrafficLightFSM, TrafficLightState #Importamos las funciones del archivo proporcionado
+from fsm_demo import (  #Importamos las funciones del archivo proporcionado
+    TrafficLightFSM,
+    TrafficLightState,
+)
 
 """Cada prueba tiene la parte de creacion de variable para poder crear un semaforo nuevo y no haya problemas entre los tests"""
 """El comando assert funciona para preguntarle al programa si la variable es igual a lo que nosotros ponemos"""

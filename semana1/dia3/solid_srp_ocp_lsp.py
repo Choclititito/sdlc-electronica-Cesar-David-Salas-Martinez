@@ -59,6 +59,7 @@ class SmartSensor:
 #Ejemplo correcto: Es facil el poder agregar alguna otra funcion parecida, sin modificar el codigo base
 from abc import ABC, abstractmethod
 
+
 class AlertStrategy(ABC): #Se usa el ejemplo proporcionado
     @abstractmethod
     def send(self, message: str) -> None:

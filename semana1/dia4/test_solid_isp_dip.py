@@ -1,13 +1,12 @@
-import pytest
 from solid_isp_dip import (
-    SensorReading, 
-    InMemoryRepository, 
-    DataProcessor, 
-    Readable,
-    Writable,
     Calibratable,
-    Resettable
-) #Importamos todas las clases a probar
+    DataProcessor,
+    InMemoryRepository,
+    Readable,
+    Resettable,
+    SensorReading,
+    Writable,
+)  #Importamos todas las clases a probar
 
 # ==========================================
 # Tests para DIP (Inversión de Dependencias)

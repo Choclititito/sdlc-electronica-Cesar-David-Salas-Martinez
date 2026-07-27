@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Protocol
- 
+
+
 class SensorType(Enum):            # enums: como tus #define, pero con tipo
     TEMPERATURE = auto()
     HUMIDITY = auto()

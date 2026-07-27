@@ -1,6 +1,7 @@
 # 3) REFACTOR - mejorar con los tests en verde
 
-import pytest #Importamos la libreria para poder hacer las pruebas
+import pytest  #Importamos la libreria para poder hacer las pruebas
+
 
 class SensorNotFoundError(Exception): #Definimos una clase para el mensaje de error
     """Excepción lanzada cuando se busca un sensor que no está registrado."""

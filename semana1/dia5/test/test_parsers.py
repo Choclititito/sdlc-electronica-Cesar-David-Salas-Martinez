@@ -1,7 +1,11 @@
 #test_parsers.py
 #Importamos los modulos desde la carpeta uart_driver
 
-from uart_driver.parsers import ModbusParser, NMEAParser #Importamos los parsers que vamos a testear
+from uart_driver.parsers import (  #Importamos los parsers que vamos a testear
+    ModbusParser,
+    NMEAParser,
+)
+
 
 # --- Tests para ModbusParser ---
 def test_modbus_frame_valido(): #Checamos que el parser reconoce correctamente una trama Modbus valida

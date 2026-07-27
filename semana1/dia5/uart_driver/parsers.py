@@ -1,8 +1,9 @@
 # parsers.py
 
 #Importamos librerias que usaremos
-from abc import ABC, abstractmethod 
+from abc import ABC, abstractmethod
 from typing import Any
+
 
 class MessageParser(ABC): # Clase abstracta para los analizadores de mensaje
     @abstractmethod
