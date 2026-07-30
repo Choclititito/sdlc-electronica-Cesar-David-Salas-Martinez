@@ -3,7 +3,9 @@ name = "sdlc-electronica-cesar-david"
 version = "0.1.0"
 description = "Proyecto de SDLC en Electrónica con calidad automatizada"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "fastapi[standard]>=0.141.1",
+]
 
 [project.optional-dependencies]
 dev = [
