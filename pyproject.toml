@@ -5,8 +5,8 @@ description = "Proyecto de SDLC en Electrónica con calidad automatizada"
 requires-python = ">=3.10"
 dependencies = [
     "fastapi[standard]>=0.141.1",
+    "sqlalchemy>=2.0.0",
 ]
-
 [project.optional-dependencies]
 dev = [
     "ruff>=0.6.0",
@@ -17,7 +17,7 @@ dev = [
 
 # Configuración de Setuptools para evitar el error de múltiples paquetes planos
 [tool.setuptools.packages.find]
-include = ["semana*", "semana*.*"]
+include = ["app*"]
 
 # ---------------------------------------------------------------------------
 # RUFF — Linting y formato
@@ -25,7 +25,7 @@ include = ["semana*", "semana*.*"]
 [tool.ruff]
 line-length = 88
 target-version = "py310"
-src = ["semana0", "semana1", "semana2"]
+src = ["app", "tests"]
 
 [tool.ruff.lint]
 select = [
@@ -41,8 +41,8 @@ select = [
 # ---------------------------------------------------------------------------
 [tool.pytest.ini_options]
 minversion = "8.0"
-testpaths = ["semana0", "semana1", "semana2"]
-addopts = "--cov --cov-fail-under=80 --cov-report=term-missing"
+testpaths = ["tests"]
+addopts = "--cov=app --cov-fail-under=80 --cov-report=term-missing"
 
 # ---------------------------------------------------------------------------
 # MYPY — Verificación estática de tipos
@@ -51,4 +51,4 @@ addopts = "--cov --cov-fail-under=80 --cov-report=term-missing"
 python_version = "3.10"
 disallow_untyped_defs = true
 check_untyped_defs = true
-files = ["semana0", "semana1", "semana2"]
+files = ["app"]
