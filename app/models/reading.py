@@ -1,20 +1,14 @@
-""" readings.py
-    Dia 4        """
-
-#Importaciones de los modulos
-from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
-
-#Importamos el modelo base de la base de datos
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 from app.db import Base
 
-# Aqui se ve como vamos a leer los datos de los sensores
+
 class ReadingModel(Base):
     __tablename__ = "readings"
     id: Mapped[int] = mapped_column(primary_key=True)
-    sensor_id: Mapped[str] = mapped_column(index=True)
+    sensor_id: Mapped[str] = mapped_column(ForeignKey("sensors.sensor_id"), index=True)
     value: Mapped[float]
     unit: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, index=True)
-    #Se agrega un campo para poder saber si la lectura esta activa o no.
-    is_active: Mapped[bool] = mapped_column(default=True) 
+    is_active: Mapped[bool] = mapped_column(default=True)
