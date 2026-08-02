@@ -1,5 +1,5 @@
 """ readings.py
-    Dia 3        """
+    Dia 4        """
 
 #Importaciones de los modulos
 from sqlalchemy.orm import Mapped, mapped_column
@@ -15,4 +15,6 @@ class ReadingModel(Base):
     sensor_id: Mapped[str] = mapped_column(index=True)
     value: Mapped[float]
     unit: Mapped[str]
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, index=True)
+    #Se agrega un campo para poder saber si la lectura esta activa o no.
+    is_active: Mapped[bool] = mapped_column(default=True) 

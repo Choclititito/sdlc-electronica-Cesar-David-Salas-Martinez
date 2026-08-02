@@ -1,25 +1,29 @@
 """ readings_repository.py
-    Dia 3        """
+    Dia 4        """
 
-#Importaciones de los modulos
+#Importacion de los modulos necesarios
 from typing import Protocol
+from datetime import datetime
 from sqlalchemy.orm import Session
-
 #Importamos el modelo de lectura de la base de datos
 from app.models.reading import ReadingModel
 
-#Se crea una clase para definir la interfaz de lectura de la base de datos
+# clase para poder leer y obtener datos
 class ReadingRepository(Protocol):
-    """La 'interfaz de driver': cualquier implementación debe cumplir este contrato."""
     def add(self, sensor_id: str, value: float, unit: str) -> ReadingModel: ...
-    def list_for_sensor(self, sensor_id: str) -> list[ReadingModel]: ...
+    def get_by_id(self, reading_id: int) -> ReadingModel | None: ...
+    def list_for_sensor(
+        self, sensor_id: str, limit: int, offset: int,
+        date_from: datetime | None, date_to: datetime | None,
+    ) -> list[ReadingModel]: ...
+    def update(self, reading_id: int, value: float | None, unit: str | None) -> ReadingModel | None: ...
+    def deactivate(self, reading_id: int) -> ReadingModel | None: ...
 
-#Se hace una clase para poder implementar la interfaz de lectura de la base de datos
+# Clase SqlAlchemyReadingRepository que implementa la interfaz ReadingRepository
 class SqlAlchemyReadingRepository:
-    """Implementación real: habla con la base de datos de verdad."""
     def __init__(self, session: Session) -> None:
         self._session = session
-
+    # Implementacion de los metodos de la interfaz ReadingRepository
     def add(self, sensor_id: str, value: float, unit: str) -> ReadingModel:
         reading = ReadingModel(sensor_id=sensor_id, value=value, unit=unit)
         self._session.add(reading)
@@ -27,9 +31,40 @@ class SqlAlchemyReadingRepository:
         self._session.refresh(reading)
         return reading
 
-    def list_for_sensor(self, sensor_id: str) -> list[ReadingModel]:
-        return (
-            self._session.query(ReadingModel)
-            .filter(ReadingModel.sensor_id == sensor_id)
-            .all()
+    def get_by_id(self, reading_id: int) -> ReadingModel | None:
+        return self._session.get(ReadingModel, reading_id)
+
+    def list_for_sensor(
+        self, sensor_id: str, limit: int, offset: int,
+        date_from: datetime | None, date_to: datetime | None,
+    ) -> list[ReadingModel]:
+        query = self._session.query(ReadingModel).filter(
+            ReadingModel.sensor_id == sensor_id,
+            ReadingModel.is_active.is_(True),
         )
+        if date_from is not None:
+            query = query.filter(ReadingModel.created_at >= date_from)
+        if date_to is not None:
+            query = query.filter(ReadingModel.created_at <= date_to)
+        return query.order_by(ReadingModel.created_at).offset(offset).limit(limit).all()
+
+    def update(self, reading_id: int, value: float | None, unit: str | None) -> ReadingModel | None:
+        reading = self.get_by_id(reading_id)
+        if reading is None:
+            return None
+        if value is not None:
+            reading.value = value
+        if unit is not None:
+            reading.unit = unit
+        self._session.commit()
+        self._session.refresh(reading)
+        return reading
+
+    def deactivate(self, reading_id: int) -> ReadingModel | None:
+        reading = self.get_by_id(reading_id)
+        if reading is None:
+            return None
+        reading.is_active = False
+        self._session.commit()
+        self._session.refresh(reading)
+        return reading
