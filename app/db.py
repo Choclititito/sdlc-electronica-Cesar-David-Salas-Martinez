@@ -1,5 +1,6 @@
 """ db.py
-    Dia 4        """
+    Dia 4        
+    Codigo que sirve para crear y configurar la base de datos"""
 
 #Importaciones de los modulos
 from typing import Generator

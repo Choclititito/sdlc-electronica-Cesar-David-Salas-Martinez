@@ -1,3 +1,9 @@
+""" readings.py
+    Dia 5
+    Codigo para definir los endpoints de la API de lecturas
+    Se encarga de recibir las solicitudes HTTP y devolver las respuestas HTTP"""
+
+#Importaciones 
 from datetime import datetime
 from fastapi import APIRouter, HTTPException, Query, status
 from app.dependencies import ReadingServiceDep, SensorServiceDep
@@ -6,9 +12,10 @@ from app.services.exceptions import (
     ReadingNotFoundError, SensorMismatchError, InvalidDateRangeError, SensorNotFoundError,
 )
 
+# Creacion del router para los endpoints de lecturas
 router = APIRouter(tags=["readings"])
 
-
+# definicion del endpoint para listar las lecturas de un sensor
 @router.get("/sensors/{sensor_id}/readings", response_model=list[SensorReadingOut])
 def list_readings(
     sensor_id: str,
@@ -18,7 +25,7 @@ def list_readings(
     offset: int = Query(0, ge=0),
     from_: datetime | None = Query(None, alias="from"),
     to: datetime | None = Query(None),
-):
+):  # Errores 
     try:
         sensor_service.get(sensor_id)  # 404 si el sensor no existe
         return service.history(sensor_id, limit=limit, offset=offset, date_from=from_, date_to=to)
@@ -27,7 +34,7 @@ def list_readings(
     except InvalidDateRangeError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
-
+# definicion del endpoint para crear una nueva lectura para un sensor
 @router.post(
     "/sensors/{sensor_id}/readings",
     response_model=SensorReadingOut,
@@ -38,7 +45,7 @@ def create_reading(
     reading: SensorReadingIn,
     service: ReadingServiceDep,
     sensor_service: SensorServiceDep,
-):
+): #Errores
     try:
         sensor_service.get(sensor_id)  # 404 si el sensor no existe
         return service.record_for_sensor(sensor_id, reading.sensor_id, reading.value, reading.unit)
@@ -49,15 +56,16 @@ def create_reading(
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
-
+# definicion del endpoint para obtener una lectura por su ID
 @router.get("/readings/{reading_id}", response_model=SensorReadingOut)
 def get_reading(reading_id: int, service: ReadingServiceDep):
     try:
         return service.get(reading_id)
+    #Errores
     except ReadingNotFoundError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
 
-
+# definicion del endpoint para actualizar parcialmente una lectura
 @router.patch("/readings/{reading_id}", response_model=SensorReadingOut)
 def update_reading(reading_id: int, patch: SensorReadingUpdate, service: ReadingServiceDep):
     try:
@@ -67,7 +75,7 @@ def update_reading(reading_id: int, patch: SensorReadingUpdate, service: Reading
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
-
+# definicion del endpoint para eliminar una lectura
 @router.delete("/readings/{reading_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_reading(reading_id: int, service: ReadingServiceDep):
     try:

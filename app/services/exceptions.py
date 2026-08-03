@@ -1,3 +1,9 @@
+""" exceptions.py
+    Dia 5
+    Codigo para definir las excepciones personalizadas
+"""
+
+#  Excepciones personalizadas para el manejo de errores en la API
 class ReadingNotFoundError(Exception):
     """La lectura solicitada no existe."""
 

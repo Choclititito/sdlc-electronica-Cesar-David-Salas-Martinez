@@ -30,10 +30,10 @@ class SqlAlchemyReadingRepository:
         self._session.commit()
         self._session.refresh(reading)
         return reading
-
+    # Implementacion del metodo get_by_id que obtiene una lectura por su id
     def get_by_id(self, reading_id: int) -> ReadingModel | None:
         return self._session.get(ReadingModel, reading_id)
-
+    # el como ver todas las lecturas de un sensor con paginacion y filtrado por fecha
     def list_for_sensor(
         self, sensor_id: str, limit: int, offset: int,
         date_from: datetime | None, date_to: datetime | None,
@@ -47,7 +47,7 @@ class SqlAlchemyReadingRepository:
         if date_to is not None:
             query = query.filter(ReadingModel.created_at <= date_to)
         return query.order_by(ReadingModel.created_at).offset(offset).limit(limit).all()
-
+    # El como actualizar una lectura por su id
     def update(self, reading_id: int, value: float | None, unit: str | None) -> ReadingModel | None:
         reading = self.get_by_id(reading_id)
         if reading is None:
@@ -59,7 +59,7 @@ class SqlAlchemyReadingRepository:
         self._session.commit()
         self._session.refresh(reading)
         return reading
-
+    #El como desactivar una lectura por su id
     def deactivate(self, reading_id: int) -> ReadingModel | None:
         reading = self.get_by_id(reading_id)
         if reading is None:
