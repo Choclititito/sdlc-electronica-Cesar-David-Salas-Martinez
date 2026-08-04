@@ -1,25 +1,39 @@
-""" reading.py
-    Dia 4        """
+""" schemas/reading.py
+    Dia 5 arreglo - sensor_id ya no viaja en el body, solo en la ruta"""
 
-#Importaciones de los modulos
+# Importaciones
 from datetime import datetime
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, model_validator
+from app.schemas.physics import UNIT_TO_TYPE, PHYSICAL_RANGE
 
-# Aqui se ve como vamos a leer los datos de los sensores
+# Schema de entrada: lo que el cliente manda al crear una lectura
 class SensorReadingIn(BaseModel):
-    sensor_id: str = Field(..., examples=["TEMP-01"])
     value: float
-    unit: str = "C"
+    unit: str = Field(..., examples=["C"])
 
-# Aqui se ve como se leen los datos de los sensores y se agregan los campos bases
-class SensorReadingOut(SensorReadingIn):
+    # Valida que la unidad exista y que el valor tenga sentido físico
+    @model_validator(mode="after")
+    def validate_physics(self) -> "SensorReadingIn":
+        if self.unit not in UNIT_TO_TYPE:
+            raise ValueError(f"Unidad desconocida: '{self.unit}'")
+        low, high = PHYSICAL_RANGE[self.unit]
+        if not (low <= self.value <= high):
+            raise ValueError(
+                f"Valor {self.value} fuera de rango físico para '{self.unit}' ({low} a {high})"
+            )
+        return self
+
+# Schema de salida: lo que la API devuelve al cliente
+class SensorReadingOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
+    sensor_id: str
+    value: float
+    unit: str
     created_at: datetime
     is_active: bool
 
-# Se actualizan los datos de los sensores, pero solo las lectuas
+# Schema de actualización parcial (PATCH): todos los campos opcionales
 class SensorReadingUpdate(BaseModel):
-    """Todos los campos opcionales: es un PATCH, no un PUT."""
     value: float | None = None
     unit: str | None = None

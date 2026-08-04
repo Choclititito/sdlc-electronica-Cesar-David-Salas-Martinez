@@ -1,30 +1,32 @@
-""" readings.py
-    Dia 4          """
+""" routers/readings.py
+    Dia 5 arreglo - POST ya no compara sensor_id de ruta vs body"""
 
-# Importaciones de los modulos necesarios
+# Importaciones
 from datetime import datetime
 from fastapi import APIRouter, HTTPException, Query, status
-from app.dependencies import ReadingServiceDep
+from app.dependencies import ReadingServiceDep, SensorServiceDep
 from app.schemas.reading import SensorReadingIn, SensorReadingOut, SensorReadingUpdate
-from app.services.exceptions import (
-    ReadingNotFoundError, SensorMismatchError, InvalidDateRangeError,
-)
-# Definimos el router para las rutas relacionadas con las lecturas
+from app.services.exceptions import ReadingNotFoundError, InvalidDateRangeError, SensorNotFoundError
+
 router = APIRouter(tags=["readings"])
 
 
-# GET /sensors/{id}/readings?limit=50&offset=0&from=...&to=...  -> 200
+# GET /sensors/{id}/readings?limit=&offset=&from=&to=  -> 200
 @router.get("/sensors/{sensor_id}/readings", response_model=list[SensorReadingOut])
 def list_readings(
     sensor_id: str,
     service: ReadingServiceDep,
+    sensor_service: SensorServiceDep,
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
     from_: datetime | None = Query(None, alias="from"),
     to: datetime | None = Query(None),
 ):
     try:
+        sensor_service.get(sensor_id)  # 404 si el sensor no existe
         return service.history(sensor_id, limit=limit, offset=offset, date_from=from_, date_to=to)
+    except SensorNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
     except InvalidDateRangeError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
@@ -35,11 +37,18 @@ def list_readings(
     response_model=SensorReadingOut,
     status_code=status.HTTP_201_CREATED,
 )
-def create_reading(sensor_id: str, reading: SensorReadingIn, service: ReadingServiceDep):
+def create_reading(
+    sensor_id: str,
+    reading: SensorReadingIn,
+    service: ReadingServiceDep,
+    sensor_service: SensorServiceDep,
+):
     try:
-        return service.record_for_sensor(sensor_id, reading.sensor_id, reading.value, reading.unit)
-    except SensorMismatchError as exc:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
+        sensor_service.get(sensor_id)  # 404 si el sensor no existe
+        # sensor_id sale únicamente de la ruta; ya no se compara contra el body
+        return service.record_for_sensor(sensor_id, reading.value, reading.unit)
+    except SensorNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
