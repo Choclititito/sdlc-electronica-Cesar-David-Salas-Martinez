@@ -42,4 +42,26 @@ app/dependencies.py: donde se arma la cadena de objetos por peticion.
 app/routers/readings.py: La capa HTTP, donde traduce el mundo web al mundo del servicio.  
 tests/test_reading_service.py: donde se prueba el readingservice.  
 
+## Dia 5  
+Le di el prompt que indicaba "Tomando en cuenta lo que llevo hecho ahora neceisto un API completo con:
+-CRUD completo de sensores y lecturas siguiendo las convenciones REST de la tabla.  
+-Validación Pydantic con física real: rechaza unidades desconocidas y valores fuera de rango físico por tipo de sensor.  
+-Arquitectura en 4 capas limpiamente separadas.  
+-Tests de integración con TestClient de FastAPI; cobertura ≥ 80%.  
+-Swagger funcional en /docs."  
+
+Aqui me dio diversos codigos, en los cuales hacia modificaciones en codigos anteriores y me dio algunos nuevos  
+
+Al probar los codigos que me dio, no pasaba los pytest, por un error en el codigo, que tuve que solucionar modificando el .py de los test.  
+
+## Dia 5 entrada 2  
+Con los comentarios de mi compañero tuve que hacer unas modificaciones, preguntandole como solucionarlo, empezando con
+
+propmt:"como hacer un migrado a la API 2.x"  
+
+
+
+
+
+
 
