@@ -1,19 +1,17 @@
-""" reading.py
-    Dia 5
-    Codigo para definir los esquemas de lectura de sensores
-"""
+""" schemas/reading.py
+    Dia 5 arreglo - sensor_id ya no viaja en el body, solo en la ruta"""
 
-#Importaciones
+# Importaciones
 from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict, model_validator
 from app.schemas.physics import UNIT_TO_TYPE, PHYSICAL_RANGE
 
-# Definicion de los esquemas de lectura de sensores
+# Schema de entrada: lo que el cliente manda al crear una lectura
 class SensorReadingIn(BaseModel):
-    sensor_id: str = Field(..., examples=["TEMP-01"])
     value: float
     unit: str = Field(..., examples=["C"])
-    # validacion que la unidad es conocida y que el valor esta dentro del rango fisico
+
+    # Valida que la unidad exista y que el valor tenga sentido físico
     @model_validator(mode="after")
     def validate_physics(self) -> "SensorReadingIn":
         if self.unit not in UNIT_TO_TYPE:
@@ -25,15 +23,17 @@ class SensorReadingIn(BaseModel):
             )
         return self
 
-
-# Definicion de los esquemas de salida de lectura de sensores
-class SensorReadingOut(SensorReadingIn):
+# Schema de salida: lo que la API devuelve al cliente
+class SensorReadingOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
+    sensor_id: str
+    value: float
+    unit: str
     created_at: datetime
     is_active: bool
 
-# Definicion de los esquemas de actualizacion de lectura de sensores
+# Schema de actualización parcial (PATCH): todos los campos opcionales
 class SensorReadingUpdate(BaseModel):
     value: float | None = None
     unit: str | None = None

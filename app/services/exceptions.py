@@ -1,15 +1,10 @@
-""" exceptions.py
-    Dia 5
-    Codigo para definir las excepciones personalizadas
-"""
+""" services/exceptions.py
+    Dia 5 arreglo - se elimina SensorMismatchError"""
 
-#  Excepciones personalizadas para el manejo de errores en la API
+# Vocabulario de errores de dominio: no saben nada de HTTP, el router los traduce
+
 class ReadingNotFoundError(Exception):
     """La lectura solicitada no existe."""
-
-
-class SensorMismatchError(Exception):
-    """El sensor_id de la ruta no coincide con el del cuerpo."""
 
 
 class InvalidDateRangeError(Exception):
