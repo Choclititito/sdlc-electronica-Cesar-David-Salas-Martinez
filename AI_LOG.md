@@ -57,11 +57,12 @@ Al probar los codigos que me dio, no pasaba los pytest, por un error en el codig
 ## Dia 5 entrada 2  
 Con los comentarios de mi compañero tuve que hacer unas modificaciones, preguntandole como solucionarlo, empezando con
 
-propmt:"como hacer un migrado a la API 2.x"  
+1.-propmt:"Como hacer un migrado a la API 2.x"  
+2.-propmt:"Como corrijo este codigo para tener orden con desempate"  
+3.-propmt:"Ayudame a que los test tengan un 80% de cobertura"  
+4.-propmt:"Como arreglo el problema de archivos autogenerados"  
 
-
-
-
+Los otros puntos como el de cambiar el datatime.now, o el agregado de los __init__ se hizo sin ninguna mayor complicacion.  
 
 
 

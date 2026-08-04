@@ -1,26 +1,23 @@
-""" reading.py
-    Dia 5
-    Codigo para hacer que cada fila sea una medicion
-    individual, amarrada a su sensor correspondiente"""
+""" models/reading.py
+    Dia 5 arreglo"""
 
-from datetime import datetime
+# Importaciones
+from datetime import datetime, timezone
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from app.db import Base
 
-# Mapeo de la tabla, con sensor_id como llave foranea hacia sensores.sensor_id.
+# Modelo de la tabla "readings" (lecturas de sensores)
 class ReadingModel(Base):
-    #Nombre de la tabla
-    __tablename__ = "readings" 
-    # Definicion de las columnas de la tabla
+    __tablename__ = "readings"
     id: Mapped[int] = mapped_column(primary_key=True)
-    # ID del sensor al que pertenece esta medicion
+    # FK hacia sensors.sensor_id: una lectura no puede existir sin su sensor
     sensor_id: Mapped[str] = mapped_column(ForeignKey("sensors.sensor_id"), index=True)
-    # Valor de la medicion
     value: Mapped[float]
-    #  Unidad de la medicion
     unit: Mapped[str]
-    # Fecha y hora de la medicion
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, index=True)
-    # Estado de la medicion, si esta activa o no
+    # datetime.now(timezone.utc) en vez de datetime.utcnow() (deprecado)
+    created_at: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(timezone.utc), index=True
+    )
+    # Soft delete: True mientras la lectura esté "viva"
     is_active: Mapped[bool] = mapped_column(default=True)
