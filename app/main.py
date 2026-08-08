@@ -8,8 +8,7 @@ from fastapi import FastAPI
 from app.db import Base, engine
 from app.routers import readings, sensors
 
-# Creacion de las tablas si no existen
-Base.metadata.create_all(bind=engine)
+
 
 # Registro de los routers para poder acceder a las rutas de la API
 app = FastAPI(title="SensorHub API", version="0.1.0")

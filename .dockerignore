@@ -1,0 +1,15 @@
+cat > .dockerignore << 'EOF'
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.db
+.git/
+.gitignore
+tests/
+semana0/
+semana1/
+semana2/
+EOF
