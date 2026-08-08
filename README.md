@@ -12,6 +12,9 @@ la programacion siempre me ha interesado pero siempre he sentido algo disperso m
 cercania al hardware, en este curso espero aprender mas sobre estas conexiones mas cercanas entre la electronuca y la programacion, a su vez de buenas practicas 
 de trabajo en programacion.  
 
+## Badge:  
+https://github.com/Choclititito/sdlc-electronica-Cesar-David-Salas-Martinez/actions/workflows/ci.yml/badge.svg  
+
 ## Instalación:  
 Para poder instalar el repositorio desde la terminal se puede usar el comando:  
 

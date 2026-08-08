@@ -8,7 +8,7 @@ from fastapi import FastAPI
 from app.routers import readings, sensors
 
 # Registro de los routers para poder acceder a las rutas de la API
-app = FastAPI(title="SensorHub API", version="0.1.0")
+app = FastAPI(title="SensorHub API", version="1.0.1")
 app.include_router(sensors.router)
 app.include_router(readings.router)
 
