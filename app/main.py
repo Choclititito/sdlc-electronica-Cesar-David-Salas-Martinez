@@ -5,10 +5,7 @@ Codigo que sirve para crear y configurar la API"""
 # Importacion de librerias
 from fastapi import FastAPI
 
-from app.db import Base, engine
 from app.routers import readings, sensors
-
-
 
 # Registro de los routers para poder acceder a las rutas de la API
 app = FastAPI(title="SensorHub API", version="0.1.0")

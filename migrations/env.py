@@ -1,18 +1,16 @@
 import sys
-from pathlib import Path
 from logging.config import fileConfig
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from pathlib import Path
 
 from alembic import context
+from sqlalchemy import engine_from_config, pool
 
 # Permite importar "app" aunque alembic corra desde la raíz del proyecto
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.db import Base, get_database_url
-from app.models.sensor import SensorModel  # noqa: F401
 from app.models.reading import ReadingModel  # noqa: F401
+from app.models.sensor import SensorModel  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

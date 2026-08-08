@@ -3,8 +3,10 @@
     FK con nombre explicito, requerido por batch mode de Alembic en SQLite"""
 
 from datetime import datetime, timezone
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
+
 from app.db import Base
 
 
