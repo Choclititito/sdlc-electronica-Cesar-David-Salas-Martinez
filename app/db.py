@@ -1,6 +1,6 @@
-""" db.py
-    Semana 4 Dia 2 
-    Soporte para PostgreSQL via DATABASE_URL, SQLite como default local"""
+"""db.py
+Semana 4 Dia 2
+Soporte para PostgreSQL via DATABASE_URL, SQLite como default local"""
 
 import os
 from typing import Generator
@@ -27,15 +27,13 @@ SQLALCHEMY_DATABASE_URL = get_database_url()
 
 # connect_args solo aplica a SQLite (Postgres no lo necesita ni lo acepta)
 connect_args = (
-    {"check_same_thread": False}
-    if SQLALCHEMY_DATABASE_URL.startswith("sqlite")
-    else {}
+    {"check_same_thread": False} if SQLALCHEMY_DATABASE_URL.startswith("sqlite") else {}
 )
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
     connect_args=connect_args,
-    pool_pre_ping=True,  # valida la conexión antes de usarla 
+    pool_pre_ping=True,  # valida la conexión antes de usarla
 )
 SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
 
