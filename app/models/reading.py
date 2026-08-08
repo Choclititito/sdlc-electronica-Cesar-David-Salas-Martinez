@@ -1,11 +1,14 @@
-""" models/reading.py
-    Dia 5 arreglo"""
+"""models/reading.py
+Dia 5 arreglo"""
 
 # Importaciones
 from datetime import datetime, timezone
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
+
 from app.db import Base
+
 
 # Modelo de la tabla "readings" (lecturas de sensores)
 class ReadingModel(Base):
