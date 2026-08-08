@@ -64,5 +64,34 @@ Con los comentarios de mi compañero tuve que hacer unas modificaciones, pregunt
 
 Los otros puntos como el de cambiar el datatime.now, o el agregado de los __init__ se hizo sin ninguna mayor complicacion.  
 
+# Semana 4  
+
+## Dia 2  
+En este dia le di el prompt a la IA "Explicame paso a paso las siguientes instrucciones:" insertando lo marcado en el curso, la IA me dio algunos cambios en el codigo ademas de pasos de como instalar y verificar el Alembic, como cambios en el codigo env.py para su correcto funcionamiento, y testeos para corroborar la creacion correcta de las tablas como el sqlite3 sensorhub.db ".schema readings.  
+
+## Dia 3  
+En este dia tuve dificultades, no por la tarea, si ni por problemas de ramas, al hacer la prueba para que fallara el test tuve que agregarle el ci.yml al main e intentar hacer un merge con una rama, esto para que me fallara el test, luego corregi errores para que lo lograra pasar, pero esto provoco un problema entre las diferentes versiones, que termino con que perdiera mi progreso hasta ese dia, use a la IA, para preguntarle como solucionar el problema, pasandole los comandos que salian, teniendo que rehacer gran parte y corregir errores nuevo que me salian a causa de retazos que aun quedaban del viejo codigo, apoyandome de la IA para poder solucionar todo.  
+
+## Dia 4  
+Le di el prompt a la IA "Basandote en la siguiente instruccion: (lo que indicaba el PDF), pasame formas de saber que todo funciona bien", dandome diferentes comando para verificar su funcionalidad, como comprobando desde la consola que todo si se guardara correctamente con:  
+curl -X POST https://sensorhub-api-bret.onrender.com/sensors \  
+  -H "Content-Type: application/json" \  
+  -d '{"sensor_id":"TEMP-01","sensor_type":"temperature","unit":"C"}'  
+  
+curl -X POST https://sensorhub-api-bret.onrender.com/sensors/TEMP-01/readings \  
+  -H "Content-Type: application/json" \  
+  -d '{"value":22.5,"unit":"C"}'  
+  
+curl https://sensorhub-api-bret.onrender.com/sensors/TEMP-01/readings  
+
+Sirviéndome para saber que todo estaba correcto, junto a otras pruebas  
+
+## Dia 5  
+Le di el prompt "Basandote en estos parametros, el codigo cumple con la checklist", con una imagen de estos parametros.  
+Me indico con que cumplia y que cosas me faltaban, pero solo eran cosas del Readme, asi que no hubo mayor problema.
+ 
+
+
+
 
 
