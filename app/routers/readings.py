@@ -1,12 +1,16 @@
-""" routers/readings.py
-    Dia 5 arreglo - POST ya no compara sensor_id de ruta vs body"""
+"""routers/readings.py
+Dia 5 arreglo - POST ya no compara sensor_id de ruta vs body"""
 
 # Importaciones
 from datetime import datetime
 from fastapi import APIRouter, HTTPException, Query, status
 from app.dependencies import ReadingServiceDep, SensorServiceDep
 from app.schemas.reading import SensorReadingIn, SensorReadingOut, SensorReadingUpdate
-from app.services.exceptions import ReadingNotFoundError, InvalidDateRangeError, SensorNotFoundError
+from app.services.exceptions import (
+    ReadingNotFoundError,
+    InvalidDateRangeError,
+    SensorNotFoundError,
+)
 
 router = APIRouter(tags=["readings"])
 
@@ -24,7 +28,9 @@ def list_readings(
 ):
     try:
         sensor_service.get(sensor_id)  # 404 si el sensor no existe
-        return service.history(sensor_id, limit=limit, offset=offset, date_from=from_, date_to=to)
+        return service.history(
+            sensor_id, limit=limit, offset=offset, date_from=from_, date_to=to
+        )
     except SensorNotFoundError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
     except InvalidDateRangeError as exc:
@@ -64,7 +70,9 @@ def get_reading(reading_id: int, service: ReadingServiceDep):
 
 # PATCH /readings/{id}  -> 200
 @router.patch("/readings/{reading_id}", response_model=SensorReadingOut)
-def update_reading(reading_id: int, patch: SensorReadingUpdate, service: ReadingServiceDep):
+def update_reading(
+    reading_id: int, patch: SensorReadingUpdate, service: ReadingServiceDep
+):
     try:
         return service.update_partial(reading_id, value=patch.value, unit=patch.unit)
     except ReadingNotFoundError as exc:

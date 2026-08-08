@@ -1,19 +1,21 @@
-""" physics.py
-    Dia 5
-    Codigo para definir los tipos de sensores y sus rangos fisicos
+"""physics.py
+Dia 5
+Codigo para definir los tipos de sensores y sus rangos fisicos
 """
 
-#Importacion de enum 
+# Importacion de enum
 from enum import Enum
 
-# Definimos tipos de sensores 
+
+# Definimos tipos de sensores
 class SensorType(str, Enum):
     TEMPERATURE = "temperature"
     HUMIDITY = "humidity"
     PRESSURE = "pressure"
     VOLTAGE = "voltage"
 
-#Definimos un diccionario que mapea las unidades a los tipos de sensores
+
+# Definimos un diccionario que mapea las unidades a los tipos de sensores
 UNIT_TO_TYPE: dict[str, SensorType] = {
     "C": SensorType.TEMPERATURE,
     "F": SensorType.TEMPERATURE,

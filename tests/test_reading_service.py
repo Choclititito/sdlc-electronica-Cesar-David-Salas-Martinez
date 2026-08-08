@@ -31,7 +31,7 @@ def service() -> ReadingService:
 def test_record_valid_reading_is_saved(service: ReadingService):
     reading = service.record_for_sensor(sensor_id="TEMP-01", value=25.0, unit="C")
     assert reading.sensor_id == "TEMP-01"
-    assert reading.value == 25.0
+    assert reading.value == 999.0  # <-- ROTO A PROPÓSITO: debería ser 25.0
 
 # Caso de error: temperatura por debajo del cero absoluto se rechaza
 def test_record_below_absolute_zero_raises(service: ReadingService):
