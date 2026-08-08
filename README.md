@@ -39,4 +39,13 @@ Los principios SOLID, aunque me costo entenderlos al principio, despues pude hac
 
 Aqui una imagen que me gusto:  
 
-<img width="512" height="512" alt="miau" src="https://github.com/user-attachments/assets/09f9a650-147c-4e30-8ea0-d09c8c97bfb7" />
+<img width="512" height="512" alt="miau" src="https://github.com/user-attachments/assets/09f9a650-147c-4e30-8ea0-d09c8c97bfb7" />  
+
+
+## API desplegada  
+
+URL pública: https://sensorhub-api-bret.onrender.com
+Documentación interactiva: https://sensorhub-api-bret.onrender.com/docs  
+
+Nota: el plan gratuito de Render "duerme" tras 15 minutos de inactividad.  
+La primera petición después de eso puede tardar hasta un minuto en responder.  
