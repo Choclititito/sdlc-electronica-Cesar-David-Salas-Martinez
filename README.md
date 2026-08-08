@@ -57,7 +57,9 @@ La primera petición después de eso puede tardar hasta un minuto en responder.
 
 Cada push a `main` dispara automáticamente un nuevo build y despliegue en Render.  
 
-Imagen del antes y despues:  
+<img width="890" height="320" alt="API 0 1 0" src="https://github.com/user-attachments/assets/0d92d8e9-4c1e-45fd-9543-ca948954b2d8" />  
+
+<img width="901" height="283" alt="API 1 0 1" src="https://github.com/user-attachments/assets/88992109-a873-4766-a37e-fbda93f9ec5c" />  
 
 El commit que actualizó la versión de la API a 1.0.1 disparó este redeploy automático sin intervención manual, visible en el dashboard de Render.  
 
