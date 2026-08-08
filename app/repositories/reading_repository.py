@@ -1,23 +1,33 @@
-""" reading_repository.py
-    Dia 5 arreglo"""
+"""reading_repository.py
+Dia 5 arreglo"""
 
-# Importaciones 
-from typing import Protocol
+# Importaciones
 from datetime import datetime
+from typing import Protocol
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+
 from app.models.reading import ReadingModel
+
 
 # Definición de la interfaz del repositorio de lecturas
 class ReadingRepository(Protocol):
     def add(self, sensor_id: str, value: float, unit: str) -> ReadingModel: ...
     def get_by_id(self, reading_id: int) -> ReadingModel | None: ...
     def list_for_sensor(
-        self, sensor_id: str, limit: int, offset: int,
-        date_from: datetime | None, date_to: datetime | None,
+        self,
+        sensor_id: str,
+        limit: int,
+        offset: int,
+        date_from: datetime | None,
+        date_to: datetime | None,
     ) -> list[ReadingModel]: ...
-    def update(self, reading_id: int, value: float | None, unit: float | None) -> ReadingModel | None: ...
+    def update(
+        self, reading_id: int, value: float | None, unit: str | None
+    ) -> ReadingModel | None: ...
     def deactivate(self, reading_id: int) -> ReadingModel | None: ...
+
 
 # Implementación del repositorio de lecturas usando SQLAlchemy
 class SqlAlchemyReadingRepository:
@@ -35,8 +45,12 @@ class SqlAlchemyReadingRepository:
         return self._session.get(ReadingModel, reading_id)
 
     def list_for_sensor(
-        self, sensor_id: str, limit: int, offset: int,
-        date_from: datetime | None, date_to: datetime | None,
+        self,
+        sensor_id: str,
+        limit: int,
+        offset: int,
+        date_from: datetime | None,
+        date_to: datetime | None,
     ) -> list[ReadingModel]:
         stmt = select(ReadingModel).where(
             ReadingModel.sensor_id == sensor_id,
@@ -55,7 +69,9 @@ class SqlAlchemyReadingRepository:
         )
         return list(self._session.scalars(stmt).all())
 
-    def update(self, reading_id: int, value: float | None, unit: str | None) -> ReadingModel | None:
+    def update(
+        self, reading_id: int, value: float | None, unit: str | None
+    ) -> ReadingModel | None:
         reading = self.get_by_id(reading_id)
         if reading is None:
             return None

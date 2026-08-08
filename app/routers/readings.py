@@ -1,12 +1,19 @@
-""" routers/readings.py
-    Dia 5 arreglo - POST ya no compara sensor_id de ruta vs body"""
+"""routers/readings.py
+Dia 5 arreglo - POST ya no compara sensor_id de ruta vs body"""
 
 # Importaciones
 from datetime import datetime
+
 from fastapi import APIRouter, HTTPException, Query, status
+
 from app.dependencies import ReadingServiceDep, SensorServiceDep
+from app.models.reading import ReadingModel
 from app.schemas.reading import SensorReadingIn, SensorReadingOut, SensorReadingUpdate
-from app.services.exceptions import ReadingNotFoundError, InvalidDateRangeError, SensorNotFoundError
+from app.services.exceptions import (
+    InvalidDateRangeError,
+    ReadingNotFoundError,
+    SensorNotFoundError,
+)
 
 router = APIRouter(tags=["readings"])
 
@@ -19,16 +26,22 @@ def list_readings(
     sensor_service: SensorServiceDep,
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
-    from_: datetime | None = Query(None, alias="from"),
-    to: datetime | None = Query(None),
-):
+    from_: datetime | None = Query(None, alias="from"),  # noqa: B008
+    to: datetime | None = Query(None),  # noqa: B008
+) -> list[ReadingModel]:
     try:
         sensor_service.get(sensor_id)  # 404 si el sensor no existe
-        return service.history(sensor_id, limit=limit, offset=offset, date_from=from_, date_to=to)
+        return service.history(
+            sensor_id, limit=limit, offset=offset, date_from=from_, date_to=to
+        )
     except SensorNotFoundError as exc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)
+        ) from exc
     except InvalidDateRangeError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
 
 
 # POST /sensors/{id}/readings  -> 201
@@ -42,41 +55,55 @@ def create_reading(
     reading: SensorReadingIn,
     service: ReadingServiceDep,
     sensor_service: SensorServiceDep,
-):
+) -> ReadingModel:
     try:
         sensor_service.get(sensor_id)  # 404 si el sensor no existe
         # sensor_id sale únicamente de la ruta; ya no se compara contra el body
         return service.record_for_sensor(sensor_id, reading.value, reading.unit)
     except SensorNotFoundError as exc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)
+        ) from exc
     except ValueError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
 
 
 # GET /readings/{id}  -> 200
 @router.get("/readings/{reading_id}", response_model=SensorReadingOut)
-def get_reading(reading_id: int, service: ReadingServiceDep):
+def get_reading(reading_id: int, service: ReadingServiceDep) -> ReadingModel:
     try:
         return service.get(reading_id)
     except ReadingNotFoundError as exc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)
+        ) from exc
 
 
 # PATCH /readings/{id}  -> 200
 @router.patch("/readings/{reading_id}", response_model=SensorReadingOut)
-def update_reading(reading_id: int, patch: SensorReadingUpdate, service: ReadingServiceDep):
+def update_reading(
+    reading_id: int, patch: SensorReadingUpdate, service: ReadingServiceDep
+) -> ReadingModel:
     try:
         return service.update_partial(reading_id, value=patch.value, unit=patch.unit)
     except ReadingNotFoundError as exc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)
+        ) from exc
     except ValueError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
 
 
 # DELETE /readings/{id}  -> 204 (desactivar, no borrar)
 @router.delete("/readings/{reading_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_reading(reading_id: int, service: ReadingServiceDep):
+def delete_reading(reading_id: int, service: ReadingServiceDep) -> None:
     try:
         service.deactivate(reading_id)
     except ReadingNotFoundError as exc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)
+        ) from exc

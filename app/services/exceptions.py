@@ -1,7 +1,8 @@
-""" services/exceptions.py
-    Dia 5 arreglo - se elimina SensorMismatchError"""
+"""services/exceptions.py
+Dia 5 arreglo - se elimina SensorMismatchError"""
 
 # Vocabulario de errores de dominio: no saben nada de HTTP, el router los traduce
+
 
 class ReadingNotFoundError(Exception):
     """La lectura solicitada no existe."""

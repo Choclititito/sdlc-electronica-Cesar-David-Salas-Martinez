@@ -1,10 +1,13 @@
-""" schemas/reading.py
-    Dia 5 arreglo - sensor_id ya no viaja en el body, solo en la ruta"""
+"""schemas/reading.py
+Dia 5 arreglo - sensor_id ya no viaja en el body, solo en la ruta"""
 
 # Importaciones
 from datetime import datetime
-from pydantic import BaseModel, Field, ConfigDict, model_validator
-from app.schemas.physics import UNIT_TO_TYPE, PHYSICAL_RANGE
+
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+from app.schemas.physics import PHYSICAL_RANGE, UNIT_TO_TYPE
+
 
 # Schema de entrada: lo que el cliente manda al crear una lectura
 class SensorReadingIn(BaseModel):
@@ -19,9 +22,11 @@ class SensorReadingIn(BaseModel):
         low, high = PHYSICAL_RANGE[self.unit]
         if not (low <= self.value <= high):
             raise ValueError(
-                f"Valor {self.value} fuera de rango físico para '{self.unit}' ({low} a {high})"
+                f"Valor {self.value} fuera de rango físico para '{self.unit}' "
+                f"({low} a {high})"
             )
         return self
+
 
 # Schema de salida: lo que la API devuelve al cliente
 class SensorReadingOut(BaseModel):
@@ -32,6 +37,7 @@ class SensorReadingOut(BaseModel):
     unit: str
     created_at: datetime
     is_active: bool
+
 
 # Schema de actualización parcial (PATCH): todos los campos opcionales
 class SensorReadingUpdate(BaseModel):

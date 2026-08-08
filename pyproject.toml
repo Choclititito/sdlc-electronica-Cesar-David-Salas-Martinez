@@ -26,6 +26,7 @@ include = ["app*"]
 line-length = 88
 target-version = "py310"
 src = ["app", "tests"]
+extend-exclude = ["semana0", "semana1", "semana2"]
 
 [tool.ruff.lint]
 select = [
