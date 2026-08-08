@@ -13,7 +13,7 @@ cercania al hardware, en este curso espero aprender mas sobre estas conexiones m
 de trabajo en programacion.  
 
 ## Badge:  
-https://github.com/Choclititito/sdlc-electronica-Cesar-David-Salas-Martinez/actions/workflows/ci.yml/badge.svg  
+![CI](https://github.com/Choclititito/sdlc-electronica-Cesar-David-Salas-Martinez/actions/workflows/ci.yml/badge.svg)
 
 ## Instalación:  
 Para poder instalar el repositorio desde la terminal se puede usar el comando:  
@@ -52,3 +52,12 @@ Documentación interactiva: https://sensorhub-api-bret.onrender.com/docs
 
 Nota: el plan gratuito de Render "duerme" tras 15 minutos de inactividad.  
 La primera petición después de eso puede tardar hasta un minuto en responder.  
+
+## Despliegue continuo  
+
+Cada push a `main` dispara automáticamente un nuevo build y despliegue en Render.  
+
+Imagen del antes y despues:  
+
+El commit que actualizó la versión de la API a 1.0.1 disparó este redeploy automático sin intervención manual, visible en el dashboard de Render.  
+
