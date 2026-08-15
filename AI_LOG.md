@@ -88,8 +88,42 @@ Sirviéndome para saber que todo estaba correcto, junto a otras pruebas
 
 ## Dia 5  
 Le di el prompt "Basandote en estos parametros, el codigo cumple con la checklist", con una imagen de estos parametros.  
-Me indico con que cumplia y que cosas me faltaban, pero solo eran cosas del Readme, asi que no hubo mayor problema.
- 
+Me indico con que cumplia y que cosas me faltaban, pero solo eran cosas del Readme, asi que no hubo mayor problema.  
+
+# Semana 5  
+
+## Dia 2  
+En este dia utilizamos Aider como fue indicado, hice una prueba, ya tenia un codigo que me habia dado copilot con el promt de ejemplo, siendo el siguiente:  
+#Codigo de copilot
+def celsius_to_fahrenheit(c: float) -> float:
+    """Convert a Celsius temperature to Fahrenheit rounded to 2 decimals.
+
+    Args:
+        c: Temperature in degrees Celsius.
+
+    Returns:
+        Temperature in degrees Fahrenheit rounded to 2 decimal places.
+    """
+    return round(c * 9.0 / 5.0 + 32.0, 2)
+
+Abajo poniendo un comentario diciendo: #creado por aider con la API de Gemini, esto para dar el siguiente promt " Crea debajo del comentario "#creado por aider con la API de Gemini" escribe una funcion pura celsius_to_farenheit(c:float) -> float con type hints completos, docstring, sin dependencias externas, redondeo a 2 decimales"  
+Todo esto para poder tener una comparativa directa entre los 2, lo malo es que lo que termino haciendo fue solamente cambiar el comentario y reescribir todo el codigo, aunque termino quedando igual, como se puede ver en el archivo.  
+
+¿En que supera a Copilot?:  
+Siento que es mejor en el hecho de poder funcionar con diferentes inteligencias artificiales, haciendo que su uso no se vea limitado solamente a una.  
+
+¿En que falla?:  
+Pues a mi me fallo en lo que le pedi, interpreto mal una instruccion que a mi parecer era bastante sencilla, y no debio haber tenido que fallar, ademas que es mas incomod de usar que el copilot que ya tiene una integracion directamente en el VSC.  
+
+
+
+
+
+## Dia 3  
+
+## Dia 4  
+
+## Dia 5  
 
 
 
