@@ -27,7 +27,10 @@ ENTREGA: solo la funcion, sin explicacion.
 
 ```python
 def aggregate_for_sensor(
-    self, sensor_id: str, date_from: datetime | None = None, date_to: datetime | None = None
+    self,
+    sensor_id: str,
+    date_from: datetime | None = None,
+    date_to: datetime | None = None,
 ) -> dict[str, int | float | None]:
     """Devuelve estadísticas agregadas de las lecturas de un sensor.
 
@@ -103,7 +106,10 @@ from app.models.sensor import SensorModel
 
 
 def aggregate_readings_stats(
-    session: Session, sensor_id: str, date_from: datetime | None = None, date_to: datetime | None = None
+    session: Session,
+    sensor_id: str,
+    date_from: datetime | None = None,
+    date_to: datetime | None = None,
 ) -> Dict[str, Optional[float]]:
     """Return aggregated statistics (min, max, mean) for a sensor's readings.
 
@@ -113,7 +119,10 @@ def aggregate_readings_stats(
     sensor_stmt = select(SensorModel).where(SensorModel.sensor_id == sensor_id)
     sensor = session.scalar(sensor_stmt)
     if sensor is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Sensor '{sensor_id}' no encontrado")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Sensor '{sensor_id}' no encontrado",
+        )
 
     stmt = select(
         func.count(ReadingModel.id),
@@ -154,6 +163,7 @@ def aggregate_readings_stats(
 """models/threshold.py
 Umbrales configurables por sensor.
 """
+
 from datetime import datetime, timezone
 
 from sqlalchemy import ForeignKey
@@ -170,7 +180,9 @@ class ThresholdModel(Base):
     )
     min_value: Mapped[float | None]
     max_value: Mapped[float | None]
-    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(timezone.utc)
+    )
     is_active: Mapped[bool] = mapped_column(default=True)
 ```
 
@@ -180,6 +192,7 @@ class ThresholdModel(Base):
 """threshold_repository.py
 Repositorio para umbrales por sensor.
 """
+
 from typing import Protocol
 
 from sqlalchemy import select
@@ -189,9 +202,13 @@ from app.models.threshold import ThresholdModel
 
 
 class ThresholdRepository(Protocol):
-    def add(self, sensor_id: str, min_value: float | None, max_value: float | None) -> ThresholdModel: ...
+    def add(
+        self, sensor_id: str, min_value: float | None, max_value: float | None
+    ) -> ThresholdModel: ...
     def get_by_sensor_id(self, sensor_id: str) -> ThresholdModel | None: ...
-    def update(self, sensor_id: str, min_value: float | None, max_value: float | None) -> ThresholdModel | None: ...
+    def update(
+        self, sensor_id: str, min_value: float | None, max_value: float | None
+    ) -> ThresholdModel | None: ...
     def deactivate(self, sensor_id: str) -> ThresholdModel | None: ...
 
 
@@ -199,18 +216,26 @@ class SqlAlchemyThresholdRepository:
     def __init__(self, session: Session) -> None:
         self._session = session
 
-    def add(self, sensor_id: str, min_value: float | None, max_value: float | None) -> ThresholdModel:
-        t = ThresholdModel(sensor_id=sensor_id, min_value=min_value, max_value=max_value)
+    def add(
+        self, sensor_id: str, min_value: float | None, max_value: float | None
+    ) -> ThresholdModel:
+        t = ThresholdModel(
+            sensor_id=sensor_id, min_value=min_value, max_value=max_value
+        )
         self._session.add(t)
         self._session.commit()
         self._session.refresh(t)
         return t
 
     def get_by_sensor_id(self, sensor_id: str) -> ThresholdModel | None:
-        stmt = select(ThresholdModel).where(ThresholdModel.sensor_id == sensor_id, ThresholdModel.is_active.is_(True))
+        stmt = select(ThresholdModel).where(
+            ThresholdModel.sensor_id == sensor_id, ThresholdModel.is_active.is_(True)
+        )
         return self._session.scalar(stmt)
 
-    def update(self, sensor_id: str, min_value: float | None, max_value: float | None) -> ThresholdModel | None:
+    def update(
+        self, sensor_id: str, min_value: float | None, max_value: float | None
+    ) -> ThresholdModel | None:
         t = self.get_by_sensor_id(sensor_id)
         if t is None:
             return None
@@ -236,6 +261,7 @@ class SqlAlchemyThresholdRepository:
 """threshold_service.py
 Lógica de negocio para umbrales por sensor.
 """
+
 from typing import TypedDict
 
 from app.repositories.threshold_repository import ThresholdRepository
@@ -251,11 +277,15 @@ class ThresholdInfo(TypedDict):
 
 
 class ThresholdService:
-    def __init__(self, repo: ThresholdRepository, sensor_service: SensorService) -> None:
+    def __init__(
+        self, repo: ThresholdRepository, sensor_service: SensorService
+    ) -> None:
         self._repo = repo
         self._sensor_service = sensor_service
 
-    def set_threshold(self, sensor_id: str, min_value: float | None, max_value: float | None) -> ThresholdModel:
+    def set_threshold(
+        self, sensor_id: str, min_value: float | None, max_value: float | None
+    ) -> ThresholdModel:
         # Verificar existencia del sensor (lanza SensorNotFoundError si no existe)
         self._sensor_service.get(sensor_id)
         existing = self._repo.get_by_sensor_id(sensor_id)
@@ -267,7 +297,11 @@ class ThresholdService:
         t = self._repo.get_by_sensor_id(sensor_id)
         if t is None:
             return None
-        return {"sensor_id": t.sensor_id, "min_value": t.min_value, "max_value": t.max_value}
+        return {
+            "sensor_id": t.sensor_id,
+            "min_value": t.min_value,
+            "max_value": t.max_value,
+        }
 
     def remove_threshold(self, sensor_id: str) -> None:
         self._repo.deactivate(sensor_id)
@@ -330,7 +364,9 @@ class SensorReadingOutWithAlert(BaseModel):
     is_alert: bool
 
 
-def _sensor_thresholds(session: Session, sensor_id: str) -> tuple[float | None, float | None]:
+def _sensor_thresholds(
+    session: Session, sensor_id: str
+) -> tuple[float | None, float | None]:
     sensor = (
         session.query(SensorModel).filter(SensorModel.sensor_id == sensor_id).first()
     )
@@ -343,7 +379,9 @@ def _sensor_thresholds(session: Session, sensor_id: str) -> tuple[float | None, 
     return (min_th, max_th)
 
 
-def reading_to_out_with_alert(session: Session, reading: ReadingModel) -> SensorReadingOutWithAlert:
+def reading_to_out_with_alert(
+    session: Session, reading: ReadingModel
+) -> SensorReadingOutWithAlert:
     min_th, max_th = _sensor_thresholds(session, reading.sensor_id)
     is_alert = False
     if min_th is not None and reading.value < min_th:
@@ -432,16 +470,20 @@ def export_readings_to_csv(
     with open(file_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         if include_header:
-            writer.writerow(["id", "sensor_id", "value", "unit", "created_at", "is_active"])
+            writer.writerow(
+                ["id", "sensor_id", "value", "unit", "created_at", "is_active"]
+            )
         for r in readings:
-            writer.writerow([
-                r.id,
-                r.sensor_id,
-                r.value,
-                r.unit,
-                r.created_at.isoformat() if r.created_at is not None else "",
-                bool(r.is_active),
-            ])
+            writer.writerow(
+                [
+                    r.id,
+                    r.sensor_id,
+                    r.value,
+                    r.unit,
+                    r.created_at.isoformat() if r.created_at is not None else "",
+                    bool(r.is_active),
+                ]
+            )
 
     return file_path
 
@@ -472,14 +514,16 @@ def export_readings_to_csv_bytes(
     if include_header:
         writer.writerow(["id", "sensor_id", "value", "unit", "created_at", "is_active"])
     for r in readings:
-        writer.writerow([
-            r.id,
-            r.sensor_id,
-            r.value,
-            r.unit,
-            r.created_at.isoformat() if r.created_at is not None else "",
-            bool(r.is_active),
-        ])
+        writer.writerow(
+            [
+                r.id,
+                r.sensor_id,
+                r.value,
+                r.unit,
+                r.created_at.isoformat() if r.created_at is not None else "",
+                bool(r.is_active),
+            ]
+        )
 
     return buf.getvalue().encode("utf-8")
 ```
@@ -538,18 +582,24 @@ def export_readings_csv(
 
         offset = 0
         while True:
-            readings = service.history(sensor_id, limit=chunk_size, offset=offset, date_from=from_, date_to=to)
+            readings = service.history(
+                sensor_id, limit=chunk_size, offset=offset, date_from=from_, date_to=to
+            )
             if not readings:
                 break
             for r in readings:
                 buf = StringIO()
                 writer = csv.writer(buf)
-                writer.writerow([
-                    r.id,
-                    r.value,
-                    r.unit,
-                    r.created_at.isoformat() if getattr(r, "created_at", None) is not None else "",
-                ])
+                writer.writerow(
+                    [
+                        r.id,
+                        r.value,
+                        r.unit,
+                        r.created_at.isoformat()
+                        if getattr(r, "created_at", None) is not None
+                        else "",
+                    ]
+                )
                 yield buf.getvalue().encode("utf-8")
             offset += len(readings)
 

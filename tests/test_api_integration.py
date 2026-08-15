@@ -219,6 +219,7 @@ def test_create_reading_out_of_physical_range_returns_422(client):
     )
     assert response.status_code == 422
 
+
 # --- lecturas: listado con filtros de fecha ---
 # Test para verificar que se puede listar las lecturas de un sensor correctamente
 def test_list_readings_for_sensor(client):

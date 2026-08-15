@@ -28,12 +28,16 @@ class ReadingService:
 
         # Normalizar unidad a mayúsculas para evitar problemas de formato
         unit_key = unit.strip().upper()
-        
-        # Solo aplicar validación de cero absoluto si es una unidad de temperatura conocida
+
+        # Solo aplicar validación de cero absoluto si es una unidad 
+        # de temperatura conocida
         if unit_key in ABSOLUTE_ZERO_BY_UNIT:
             limit = ABSOLUTE_ZERO_BY_UNIT[unit_key]
             if value < limit:
-                raise ValueError(f"Temperatura {value} {unit} por debajo del cero absoluto ({limit} {unit})")
+                raise ValueError(
+                    f"Temperatura {value} {unit} por"
+                    f" debajo del cero absoluto ({limit} {unit})"
+                )
 
     def record_for_sensor(
         self, sensor_id: str, value: float, unit: str
@@ -59,10 +63,12 @@ class ReadingService:
         # Regla de negocio: el rango de fechas debe tener sentido
         if date_from is not None and date_to is not None and date_from > date_to:
             raise InvalidDateRangeError("'from' no puede ser posterior a 'to'")
-        
+
         # Defensa en profundidad: evitar límites excesivos que degraden el rendimiento
         safe_limit = min(limit, DEFAULT_MAX_LIMIT) if limit > 0 else DEFAULT_MAX_LIMIT
-        return self._repo.list_for_sensor(sensor_id, safe_limit, offset, date_from, date_to)
+        return self._repo.list_for_sensor(
+            sensor_id, safe_limit, offset, date_from, date_to
+        )
 
     def get(self, reading_id: int) -> ReadingModel:
         reading = self._repo.get_by_id(reading_id)
@@ -74,7 +80,8 @@ class ReadingService:
         self, reading_id: int, value: float | None, unit: str | None
     ) -> ReadingModel:
         if value is not None:
-            # Si no se provee unidad en el patch, intentamos obtener la lectura existente para validar
+            # Si no se provee unidad en el patch, intentamos obtener la lectura 
+            # existente para validar
             if unit is None:
                 existing = self.get(reading_id)
                 unit = existing.unit

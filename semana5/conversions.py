@@ -1,4 +1,4 @@
-#creado por aider con la API de Gemini
+# creado por aider con la API de Gemini
 def celsius_to_fahrenheit(c: float) -> float:
     """Convert a Celsius temperature to Fahrenheit rounded to 2 decimals.
 
