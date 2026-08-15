@@ -29,7 +29,7 @@ class ReadingService:
         # Normalizar unidad a mayúsculas para evitar problemas de formato
         unit_key = unit.strip().upper()
 
-        # Solo aplicar validación de cero absoluto si es una unidad 
+        # Solo aplicar validación de cero absoluto si es una unidad
         # de temperatura conocida
         if unit_key in ABSOLUTE_ZERO_BY_UNIT:
             limit = ABSOLUTE_ZERO_BY_UNIT[unit_key]
@@ -80,7 +80,7 @@ class ReadingService:
         self, reading_id: int, value: float | None, unit: str | None
     ) -> ReadingModel:
         if value is not None:
-            # Si no se provee unidad en el patch, intentamos obtener la lectura 
+            # Si no se provee unidad en el patch, intentamos obtener la lectura
             # existente para validar
             if unit is None:
                 existing = self.get(reading_id)

@@ -6,7 +6,11 @@ from datetime import datetime
 
 from fastapi import APIRouter, HTTPException, Query, status
 
-from app.dependencies import ReadingServiceDep, SensorServiceDep
+from app.dependencies import (
+    AnomalyDetectionServiceDep,
+    ReadingServiceDep,
+    SensorServiceDep,
+)
 from app.models.reading import ReadingModel
 from app.schemas.reading import SensorReadingIn, SensorReadingOut, SensorReadingUpdate
 from app.services.exceptions import (
@@ -55,11 +59,13 @@ def create_reading(
     reading: SensorReadingIn,
     service: ReadingServiceDep,
     sensor_service: SensorServiceDep,
+    anomaly_service: AnomalyDetectionServiceDep,
 ) -> ReadingModel:
     try:
-        sensor_service.get(sensor_id)  # 404 si el sensor no existe
-        # sensor_id sale únicamente de la ruta; ya no se compara contra el body
-        return service.record_for_sensor(sensor_id, reading.value, reading.unit)
+        sensor_service.get(sensor_id)
+        new_reading = service.record_for_sensor(sensor_id, reading.value, reading.unit)
+        anomaly_service.evaluate(sensor_id, new_reading.id, new_reading.value)
+        return new_reading
     except SensorNotFoundError as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)

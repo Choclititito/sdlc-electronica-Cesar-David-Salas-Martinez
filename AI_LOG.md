@@ -183,6 +183,16 @@ Con estas correcciones, y haciendo una clase de resumen de esta pude tener una m
 
 ## Dia 5  
 
+Prompts usados:  
+"Escribe tests para un AnomalyDetectionService que evalue una lectura 
+contra thresholds min/max de un sensor, usando fakes para repo y notifier, 
+antes de implementar el servicio (TDD estricto)"  
+" Realiza los codigos para poder implementar esta nueva funcion al codigo, tomando en cuenta la estrategia de alerta intercambiable(OCP), explica cada codigo que me termines pasando"  
+La IA me paso varios tests y los codigos que le pedi, tenian errores que evitaban que pudieran funcionar como deberian empezando con falta de importaciones de librerias, en el codigo de routers/readings.py, problemas con el ruff, teniendo errores de formato en su mayoria, como lineas muy largas o mal formato de las librerias, el mypy tambien detecto errores que tuve que corregir, como el tener que agregar el AlertRepositoryDep = ... y el AnomalyDetectionServiceDep = ... en el archivo de app/dependencies.py, y por ultimo los pytest fueron los unicos que funcionaron sin problema.  
+
+## Dia 6  
+
+
 
 
 
