@@ -94,7 +94,8 @@ Me indico con que cumplia y que cosas me faltaban, pero solo eran cosas del Read
 
 ## Dia 2  
 En este dia utilizamos Aider como fue indicado, hice una prueba, ya tenia un codigo que me habia dado copilot con el promt de ejemplo, siendo el siguiente:  
-#Codigo de copilot
+#Codigo de copilot  
+```python
 def celsius_to_fahrenheit(c: float) -> float:
     """Convert a Celsius temperature to Fahrenheit rounded to 2 decimals.
 
@@ -105,6 +106,7 @@ def celsius_to_fahrenheit(c: float) -> float:
         Temperature in degrees Fahrenheit rounded to 2 decimal places.
     """
     return round(c * 9.0 / 5.0 + 32.0, 2)
+```
 
 Abajo poniendo un comentario diciendo: #creado por aider con la API de Gemini, esto para dar el siguiente promt " Crea debajo del comentario "#creado por aider con la API de Gemini" escribe una funcion pura celsius_to_farenheit(c:float) -> float con type hints completos, docstring, sin dependencias externas, redondeo a 2 decimales"  
 Todo esto para poder tener una comparativa directa entre los 2, lo malo es que lo que termino haciendo fue solamente cambiar el comentario y reescribir todo el codigo, aunque termino quedando igual, como se puede ver en el archivo.  
