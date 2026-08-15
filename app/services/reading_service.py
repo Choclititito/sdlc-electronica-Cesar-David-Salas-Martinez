@@ -22,12 +22,18 @@ class ReadingService:
     def __init__(self, repo: ReadingRepository) -> None:
         self._repo = repo
 
-    def _validate_absolute_zero(self, value: float, unit: str) -> None:
+    def _validate_absolute_zero(self, value: float, unit: str | None) -> None:
+        if unit is None:
+            return
+
         # Normalizar unidad a mayúsculas para evitar problemas de formato
-        unit_key = unit.upper() if unit else "C"
-        limit = ABSOLUTE_ZERO_BY_UNIT.get(unit_key, -273.15)  # Por defecto Celsius si no se reconoce
-        if value < limit:
-            raise ValueError(f"Temperatura {value} {unit} por debajo del cero absoluto ({limit} {unit})")
+        unit_key = unit.strip().upper()
+        
+        # Solo aplicar validación de cero absoluto si es una unidad de temperatura conocida
+        if unit_key in ABSOLUTE_ZERO_BY_UNIT:
+            limit = ABSOLUTE_ZERO_BY_UNIT[unit_key]
+            if value < limit:
+                raise ValueError(f"Temperatura {value} {unit} por debajo del cero absoluto ({limit} {unit})")
 
     def record_for_sensor(
         self, sensor_id: str, value: float, unit: str
@@ -44,6 +50,12 @@ class ReadingService:
         date_from: datetime | None,
         date_to: datetime | None,
     ) -> list[ReadingModel]:
+        # Validar que los parámetros de paginación no sean negativos
+        if limit < 0:
+            raise ValueError("El límite (limit) no puede ser negativo")
+        if offset < 0:
+            raise ValueError("El desplazamiento (offset) no puede ser negativo")
+
         # Regla de negocio: el rango de fechas debe tener sentido
         if date_from is not None and date_to is not None and date_from > date_to:
             raise InvalidDateRangeError("'from' no puede ser posterior a 'to'")
