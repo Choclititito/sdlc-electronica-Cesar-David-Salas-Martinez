@@ -117,13 +117,69 @@ Siento que es mejor en el hecho de poder funcionar con diferentes inteligencias 
 ¿En que falla?:  
 Pues a mi me fallo en lo que le pedi, interpreto mal una instruccion que a mi parecer era bastante sencilla, y no debio haber tenido que fallar, ademas que es mas incomod de usar que el copilot que ya tiene una integracion directamente en el VSC.  
 
-
-
-
-
 ## Dia 3  
+Aqui utilice la IA con Aider, con una key de gemini, usando el modelo 3.5 flash, use estos 2 prompts:  
+
+1.-"Revisa la clase ReadingService en este archivo como un ingeniero senior en un
+code review. Busca: violaciones de SOLID, casos borde sin manejar, riesgos de
+seguridad y problemas de rendimiento. Para cada hallazgo indica la linea y
+propon una correccion. No reescribas todo; solo señala."  
+
+2.-"> que casos borde (nulos, limites, entradas malformadas) no estoy manejando en esta clase?"  
+
+Estos dos prompts, me dieron resultados no tan satisfactorios, empezando con el primero, el Aider al estar diseñado para siempre modificar, termino haciendo caso omiso a mi indicacion de solamente señalar las cosas que debia modificar, por el lado amable, termine dejando las modificaciones porque las vi acertadas.  
+Con el segundo tuve un problema que me indicaba que el modelo de IA no podia ser utilizado en este momento, que deberia intentar despues, a pesar que ya estaba terminando el codigo, curiosamente, checando manualmente, pude notar que si habia terminado de hacer el codigo, lo cual solo me confundio mas.  
+
 
 ## Dia 4  
+Aqui lo que hice fue juntar una serie de notas de todo el proyecto, para asi que la IA tenga un contexto suficiente para poder hacer un ADR bueno, las notas que le di al final fueron las siguientes:
+
+```python
+- empezamos con todo junto en main.py (fastapi + sqlalchemy + pydantic
+  mezclado), funcionaba pero dificil de testear
+
+- necesitabamos probar la logica (ej. que rechace temperatura bajo cero
+  absoluto) sin tener que levantar sqlite/postgres cada vez, muy lento
+  para iterar
+
+- profesor pidio explicitamente patron repositorio + capa de servicio,
+  con Protocol para poder inyectar un fake repo en los tests
+
+- capas que terminamos usando: router (recibe http, nada de logica),
+  service (reglas de negocio tipo validar cero absoluto, rangos de fecha,
+  duplicados), repository (unico que toca sql, expuesto como Protocol +
+  implementacion concreta SqlAlchemy), model (tabla sqlalchemy)
+
+- el Protocol es la parte clave, permite que el service no sepa si hay
+  sqlite o postgres detras, ni si es un fake en memoria para tests  
+
+- se probo en la practica: migramos de sqlite a postgres agregando
+  DATABASE_URL configurable, y no tocamos nada de app/services/  
+
+- tambien encontramos un bug real por no seguir bien el patron: un
+  service (sensor_service) quedo tipado contra la clase concreta del
+  repositorio en vez del Protocol, se detecto con mypy y se corrigio  
+
+- contras que notamos: cada feature chica implica tocar como 4-5 archivos
+  (schema, service, repo, protocol, router), mas ceremonia que tener todo
+  junto  
+
+- tambien mas curva de aprendizaje, la inyeccion de dependencias
+  encadenada (get_db -> repo -> service via Depends) no es obvia al
+  principio  
+
+- decision ya esta tomada y en uso, no es hipotetica  
+```
+Con todas estas notas la IA de gemini me dio un ADR, bastante completo, pero con pequeños ajustes que tuve que hacer:  
+- Titulo muy largo: ADR 001: Adopción de Arquitectura en Capas y Patrón Repositorio con Inyección de Dependencias  
+
+- Tamaño muy grande del ADR: 47 renglones en total   
+
+- Mal redactado: Seguridad de Tipos Estáticos  
+
+Con estas correcciones, y haciendo una clase de resumen de esta pude tener una mejor ADR.
+
+
 
 ## Dia 5  
 
