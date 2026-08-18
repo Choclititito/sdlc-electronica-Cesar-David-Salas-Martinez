@@ -192,7 +192,7 @@ La IA me paso varios tests y los codigos que le pedi, tenian errores que evitaba
 
 ## Dia 6  
 
-
+En este dia verificamos lo que tuvimos que hacer fue revisar el PR de nuestro compañero, primero nosotros, y luego pedirle ayuda a la IA, lo que note fue como la IA ayuda mucho a encontrar fallos mas centrados en el codigo, mientras que no puede checar tanto errores verificables en el servidor montado, ya que no tiene la capacidad de poder hacer un servidor propio para poder verificarlo, tambien es mas facil para mi tener criterio si se entiende la descripccion o titulo del PR, ya que una inteligencia artificial, casi siempre va a tener errores de redaccion, y va complicado que sepa si es entendible para un humano.
 
 
 
