@@ -1,6 +1,6 @@
-""" models/reading.py
-    Semana 4 Dia 3 -
-    FK con nombre explicito, requerido por batch mode de Alembic en SQLite"""
+"""models/reading.py
+Semana 4 Dia 3 -
+FK con nombre explicito, requerido por batch mode de Alembic en SQLite"""
 
 from datetime import datetime, timezone
 

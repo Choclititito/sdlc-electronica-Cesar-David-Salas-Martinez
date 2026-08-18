@@ -88,9 +88,111 @@ Sirviéndome para saber que todo estaba correcto, junto a otras pruebas
 
 ## Dia 5  
 Le di el prompt "Basandote en estos parametros, el codigo cumple con la checklist", con una imagen de estos parametros.  
-Me indico con que cumplia y que cosas me faltaban, pero solo eran cosas del Readme, asi que no hubo mayor problema.
- 
+Me indico con que cumplia y que cosas me faltaban, pero solo eran cosas del Readme, asi que no hubo mayor problema.  
 
+# Semana 5  
+
+## Dia 2  
+En este dia utilizamos Aider como fue indicado, hice una prueba, ya tenia un codigo que me habia dado copilot con el promt de ejemplo, siendo el siguiente:  
+#Codigo de copilot  
+```python
+def celsius_to_fahrenheit(c: float) -> float:
+    """Convert a Celsius temperature to Fahrenheit rounded to 2 decimals.
+
+    Args:
+        c: Temperature in degrees Celsius.
+
+    Returns:
+        Temperature in degrees Fahrenheit rounded to 2 decimal places.
+    """
+    return round(c * 9.0 / 5.0 + 32.0, 2)
+```
+
+Abajo poniendo un comentario diciendo: #creado por aider con la API de Gemini, esto para dar el siguiente promt " Crea debajo del comentario "#creado por aider con la API de Gemini" escribe una funcion pura celsius_to_farenheit(c:float) -> float con type hints completos, docstring, sin dependencias externas, redondeo a 2 decimales"  
+Todo esto para poder tener una comparativa directa entre los 2, lo malo es que lo que termino haciendo fue solamente cambiar el comentario y reescribir todo el codigo, aunque termino quedando igual, como se puede ver en el archivo.  
+
+¿En que supera a Copilot?:  
+Siento que es mejor en el hecho de poder funcionar con diferentes inteligencias artificiales, haciendo que su uso no se vea limitado solamente a una.  
+
+¿En que falla?:  
+Pues a mi me fallo en lo que le pedi, interpreto mal una instruccion que a mi parecer era bastante sencilla, y no debio haber tenido que fallar, ademas que es mas incomod de usar que el copilot que ya tiene una integracion directamente en el VSC.  
+
+## Dia 3  
+Aqui utilice la IA con Aider, con una key de gemini, usando el modelo 3.5 flash, use estos 2 prompts:  
+
+1.-"Revisa la clase ReadingService en este archivo como un ingeniero senior en un
+code review. Busca: violaciones de SOLID, casos borde sin manejar, riesgos de
+seguridad y problemas de rendimiento. Para cada hallazgo indica la linea y
+propon una correccion. No reescribas todo; solo señala."  
+
+2.-"> que casos borde (nulos, limites, entradas malformadas) no estoy manejando en esta clase?"  
+
+Estos dos prompts, me dieron resultados no tan satisfactorios, empezando con el primero, el Aider al estar diseñado para siempre modificar, termino haciendo caso omiso a mi indicacion de solamente señalar las cosas que debia modificar, por el lado amable, termine dejando las modificaciones porque las vi acertadas.  
+Con el segundo tuve un problema que me indicaba que el modelo de IA no podia ser utilizado en este momento, que deberia intentar despues, a pesar que ya estaba terminando el codigo, curiosamente, checando manualmente, pude notar que si habia terminado de hacer el codigo, lo cual solo me confundio mas.  
+
+
+## Dia 4  
+Aqui lo que hice fue juntar una serie de notas de todo el proyecto, para asi que la IA tenga un contexto suficiente para poder hacer un ADR bueno, las notas que le di al final fueron las siguientes:
+
+```python
+- empezamos con todo junto en main.py (fastapi + sqlalchemy + pydantic
+  mezclado), funcionaba pero dificil de testear
+
+- necesitabamos probar la logica (ej. que rechace temperatura bajo cero
+  absoluto) sin tener que levantar sqlite/postgres cada vez, muy lento
+  para iterar
+
+- profesor pidio explicitamente patron repositorio + capa de servicio,
+  con Protocol para poder inyectar un fake repo en los tests
+
+- capas que terminamos usando: router (recibe http, nada de logica),
+  service (reglas de negocio tipo validar cero absoluto, rangos de fecha,
+  duplicados), repository (unico que toca sql, expuesto como Protocol +
+  implementacion concreta SqlAlchemy), model (tabla sqlalchemy)
+
+- el Protocol es la parte clave, permite que el service no sepa si hay
+  sqlite o postgres detras, ni si es un fake en memoria para tests  
+
+- se probo en la practica: migramos de sqlite a postgres agregando
+  DATABASE_URL configurable, y no tocamos nada de app/services/  
+
+- tambien encontramos un bug real por no seguir bien el patron: un
+  service (sensor_service) quedo tipado contra la clase concreta del
+  repositorio en vez del Protocol, se detecto con mypy y se corrigio  
+
+- contras que notamos: cada feature chica implica tocar como 4-5 archivos
+  (schema, service, repo, protocol, router), mas ceremonia que tener todo
+  junto  
+
+- tambien mas curva de aprendizaje, la inyeccion de dependencias
+  encadenada (get_db -> repo -> service via Depends) no es obvia al
+  principio  
+
+- decision ya esta tomada y en uso, no es hipotetica  
+```
+Con todas estas notas la IA de gemini me dio un ADR, bastante completo, pero con pequeños ajustes que tuve que hacer:  
+- Titulo muy largo: ADR 001: Adopción de Arquitectura en Capas y Patrón Repositorio con Inyección de Dependencias  
+
+- Tamaño muy grande del ADR: 47 renglones en total   
+
+- Mal redactado: Seguridad de Tipos Estáticos  
+
+Con estas correcciones, y haciendo una clase de resumen de esta pude tener una mejor ADR.
+
+
+
+## Dia 5  
+
+Prompts usados:  
+"Escribe tests para un AnomalyDetectionService que evalue una lectura 
+contra thresholds min/max de un sensor, usando fakes para repo y notifier, 
+antes de implementar el servicio (TDD estricto)"  
+" Realiza los codigos para poder implementar esta nueva funcion al codigo, tomando en cuenta la estrategia de alerta intercambiable(OCP), explica cada codigo que me termines pasando"  
+La IA me paso varios tests y los codigos que le pedi, tenian errores que evitaban que pudieran funcionar como deberian empezando con falta de importaciones de librerias, en el codigo de routers/readings.py, problemas con el ruff, teniendo errores de formato en su mayoria, como lineas muy largas o mal formato de las librerias, el mypy tambien detecto errores que tuve que corregir, como el tener que agregar el AlertRepositoryDep = ... y el AnomalyDetectionServiceDep = ... en el archivo de app/dependencies.py, y por ultimo los pytest fueron los unicos que funcionaron sin problema.  
+
+## Dia 6  
+
+En este dia verificamos lo que tuvimos que hacer fue revisar el PR de nuestro compañero, primero nosotros, y luego pedirle ayuda a la IA, lo que note fue como la IA ayuda mucho a encontrar fallos mas centrados en el codigo, mientras que no puede checar tanto errores verificables en el servidor montado, ya que no tiene la capacidad de poder hacer un servidor propio para poder verificarlo, tambien es mas facil para mi tener criterio si se entiende la descripccion o titulo del PR, ya que una inteligencia artificial, casi siempre va a tener errores de redaccion, y va complicado que sepa si es entendible para un humano.
 
 
 
