@@ -18,3 +18,7 @@ class SensorNotFoundError(Exception):
 
 class SensorAlreadyExistsError(Exception):
     """Ya existe un sensor con ese sensor_id."""
+
+
+class AlertCreationError(Exception):
+    """No se pudo crear la alerta: sensor_id o reading_id invalido."""

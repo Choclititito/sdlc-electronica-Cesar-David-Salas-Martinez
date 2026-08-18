@@ -49,7 +49,7 @@ class FakeAlertNotifier:
 @dataclass
 class FakeSensorLookup:
     """Simula la consulta de thresholds de un sensor,
-      sin tocar SensorRepository real."""
+    sin tocar SensorRepository real."""
 
     sensors: dict[str, SensorModel] = field(default_factory=dict)
 
@@ -135,7 +135,7 @@ def test_sensor_without_thresholds_never_creates_alert(service, alert_repo, noti
 def test_unknown_sensor_does_not_raise_and_creates_no_alert(
     service, alert_repo, notifier
 ):
-    """Sensor no encontrado en el lookup: 
+    """Sensor no encontrado en el lookup:
     se ignora silenciosamente, no rompe el flujo de creacion de reading."""
     service.evaluate(sensor_id="GHOST-99", reading_id=3, value=999.0)
     assert alert_repo.list_for_sensor("GHOST-99") == []

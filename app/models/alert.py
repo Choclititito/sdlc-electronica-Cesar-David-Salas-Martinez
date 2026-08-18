@@ -16,10 +16,10 @@ class AlertModel(Base):
         ForeignKey("sensors.sensor_id", name="fk_alerts_sensor_id"), index=True
     )
     reading_id: Mapped[int] = mapped_column(
-        ForeignKey("readings.id", name="fk_alerts_reading_id")
+        ForeignKey("readings.id", name="fk_alerts_reading_id"), index=True
     )
     value: Mapped[float]
-    threshold_breached: Mapped[str]  # "min" o "max"
+    threshold_breached: Mapped[str]
     message: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(
         default=lambda: datetime.now(timezone.utc), index=True

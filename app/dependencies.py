@@ -20,10 +20,20 @@ from app.repositories.sensor_repository import (
     SensorRepository,
     SqlAlchemySensorRepository,
 )
+from app.services.alert_query_service import AlertQueryService
 from app.services.anomaly_detection_service import AnomalyDetectionService
 from app.services.notifiers import AlertNotifier, LogAlertNotifier
 from app.services.reading_service import ReadingService
 from app.services.sensor_service import SensorService
+
+
+def get_alert_repository(db: Session = Depends(get_db)) -> AlertRepository:  # noqa: B008
+    return SqlAlchemyAlertRepository(db)
+
+def get_alert_query_service(
+    repo: AlertRepository = Depends(get_alert_repository),  # noqa: B008
+) -> AlertQueryService:
+    return AlertQueryService(repo)
 
 
 def get_reading_repository(db: Session = Depends(get_db)) -> ReadingRepository:  # noqa: B008
@@ -33,9 +43,6 @@ def get_reading_repository(db: Session = Depends(get_db)) -> ReadingRepository: 
 def get_sensor_repository(db: Session = Depends(get_db)) -> SensorRepository:  # noqa: B008
     return SqlAlchemySensorRepository(db)
 
-
-def get_alert_repository(db: Session = Depends(get_db)) -> AlertRepository:  # noqa: B008
-    return SqlAlchemyAlertRepository(db)
 
 
 def get_reading_service(
@@ -51,8 +58,8 @@ def get_sensor_service(
 
 
 def get_alert_notifier() -> AlertNotifier:
-    return LogAlertNotifier()  # estrategia por defecto; cambia aqui sin tocar 
-                               #el service
+    return LogAlertNotifier()  # estrategia por defecto; cambia aqui sin tocar
+    # el service
 
 
 def get_anomaly_detection_service(
@@ -66,8 +73,10 @@ def get_anomaly_detection_service(
 
 
 # Tipos de dependencias para inyectar en los endpoints
+AlertQueryServiceDep = Annotated[AlertQueryService, Depends(get_alert_query_service)]
 ReadingServiceDep = Annotated[ReadingService, Depends(get_reading_service)]
 SensorServiceDep = Annotated[SensorService, Depends(get_sensor_service)]
 AlertRepositoryDep = Annotated[AlertRepository, Depends(get_alert_repository)]
-AnomalyDetectionServiceDep = Annotated[AnomalyDetectionService, Depends(
-    get_anomaly_detection_service)]
+AnomalyDetectionServiceDep = Annotated[
+    AnomalyDetectionService, Depends(get_anomaly_detection_service)
+]
