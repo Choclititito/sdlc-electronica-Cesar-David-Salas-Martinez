@@ -1,5 +1,5 @@
 """tests/domain/test_alert_status.py
-TDD: escrito antes de app.domain.alert_status.
+Test en verde con la logica de dominio de alert_status.py.
 """
 import pytest
 from app.domain.alert_status import AlertStatus, can_transition, InvalidTransitionError

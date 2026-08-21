@@ -1,6 +1,6 @@
 """tests/domain/test_alert_severity.py
-TDD: este test se escribe ANTES de que exista app.domain.alert_severity.
-Debe fallar con ImportError al principio.
+Test en estado verde con la logica de dominio de alert_severity.py. 
+No hay dependencias de FastAPI/SQLAlchemy.
 """
 import pytest
 from app.domain.alert_severity import determine_severity, AlertSeverity
