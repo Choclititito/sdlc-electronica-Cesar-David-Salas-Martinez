@@ -1,5 +1,4 @@
-"""models/sensor.py
-Dia 5 arreglo"""
+"""models/sensor.py"""
 
 # Importaciones
 from datetime import datetime, timezone
@@ -16,6 +15,7 @@ class SensorModel(Base):
     sensor_id: Mapped[str] = mapped_column(unique=True, index=True)
     sensor_type: Mapped[str]
     unit: Mapped[str]
+    location: Mapped[str | None] = mapped_column(default=None)
     min_threshold: Mapped[float | None] = mapped_column(default=None)
     max_threshold: Mapped[float | None] = mapped_column(default=None)
     is_active: Mapped[bool] = mapped_column(default=True)

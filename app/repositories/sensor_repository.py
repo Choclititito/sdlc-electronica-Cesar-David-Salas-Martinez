@@ -6,6 +6,7 @@ y su implementacion con SQLAlchemy"""
 # Importaciones
 from typing import Protocol
 
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.models.sensor import SensorModel
@@ -21,6 +22,7 @@ class SensorRepository(Protocol):
         self, sensor_id: str, sensor_type: str | None, unit: str | None
     ) -> SensorModel | None: ...
     def deactivate(self, sensor_id: str) -> SensorModel | None: ...
+    def count_active(self) -> int: ...
 
 
 # Implementacion del repositorio de sensores usando SQLAlchemy
@@ -38,21 +40,18 @@ class SqlAlchemySensorRepository:
 
     # El como obtener un sensor por su id
     def get_by_sensor_id(self, sensor_id: str) -> SensorModel | None:
-        return (
-            self._session.query(SensorModel)
-            .filter(SensorModel.sensor_id == sensor_id)
-            .first()
-        )
+        stmt = select(SensorModel).where(SensorModel.sensor_id == sensor_id)
+        return self._session.scalar(stmt)
 
     # El como listar todos los sensores activos con paginacion
     def list_all(self, limit: int, offset: int) -> list[SensorModel]:
-        return (
-            self._session.query(SensorModel)
-            .filter(SensorModel.is_active.is_(True))
+        stmt = (
+            select(SensorModel)
+            .where(SensorModel.is_active.is_(True))
             .offset(offset)
             .limit(limit)
-            .all()
         )
+        return list(self._session.scalars(stmt).all())
 
     # El como actualizar un sensor por su id
     def update(
@@ -78,3 +77,10 @@ class SqlAlchemySensorRepository:
         self._session.commit()
         self._session.refresh(sensor)
         return sensor
+
+    # El como contar sensores activos (para el endpoint de metricas)
+    def count_active(self) -> int:
+        stmt = select(func.count()).select_from(SensorModel).where(
+            SensorModel.is_active.is_(True)
+        )
+        return self._session.scalar(stmt) or 0

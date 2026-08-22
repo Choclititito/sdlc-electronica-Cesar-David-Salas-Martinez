@@ -19,7 +19,13 @@ class AlertModel(Base):
         ForeignKey("readings.id", name="fk_alerts_reading_id"), index=True
     )
     value: Mapped[float]
-    threshold_breached: Mapped[str]
+    threshold_breached: Mapped[str]  # "min" o "max"
+    severity: Mapped[
+        str
+    ]  # "warning" o "critical" (app.domain.alert_severity.AlertSeverity)
+    status: Mapped[str] = mapped_column(
+        default="open"
+    )  # app.domain.alert_status.AlertStatus
     message: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(
         default=lambda: datetime.now(timezone.utc), index=True

@@ -195,5 +195,34 @@ La IA me paso varios tests y los codigos que le pedi, tenian errores que evitaba
 En este dia verificamos lo que tuvimos que hacer fue revisar el PR de nuestro compañero, primero nosotros, y luego pedirle ayuda a la IA, lo que note fue como la IA ayuda mucho a encontrar fallos mas centrados en el codigo, mientras que no puede checar tanto errores verificables en el servidor montado, ya que no tiene la capacidad de poder hacer un servidor propio para poder verificarlo, tambien es mas facil para mi tener criterio si se entiende la descripccion o titulo del PR, ya que una inteligencia artificial, casi siempre va a tener errores de redaccion, y va complicado que sepa si es entendible para un humano.
 
 
+# Semana 6 PROYECTO  
+
+## Entrada 1:  
+En la primera entrada, le pregunte a la IA basandose en las instrucciones el siguiente prompt "Basandote en esta lista de requisitos, en cuales puntos no tengo todo completado", adjuntando las 2 listas de requisitos, para asi tener una lista de cosas que me podrian faltar, me termino dando varios puntos que le faltaban a mi proyecto, los cuales en su mayoria accedi a hacer.  
+
+## Entrada 2:  
+Le di el prompt: "Necesito una funcion pura determine_severity(value, min_threshold,
+max_threshold) que devuelva WARNING o CRITICAL segun que tan lejos esta
+el valor del threshold, o None si esta en rango. Sigue TDD: dame primero
+los tests, sin implementacion todavia."  
+
+Me genero varios tests, los cuales funcionaron como deberian, saliendo con resultados rojos.  
+
+Luego tuve que usar un prompt que indicaba : "Diseña un Enum AlertStatus (open, acknowledged, resolved) y una funcion
+can_transition(current, target) que valide transiciones. resolved debe
+ser terminal. Dame los tests primero, TDD estricto."  
+
+Me dio los tests , de los cuales no tuve que cambiar mucho, mas que algunos detalles como el permitir el caso de open a resolved, ya que un usuario podria resolver una alerta sin necesidad de reconocerla, y ya sabe la causa.  
+
+y por ultimo prompt utilice: "Funcion pura compute_statistics(values: list[float]) que devuelva
+count/min/max/average. Lista vacia -> todo None excepto count=0.
+Redondea average a 2 decimales. TDD: tests primero."  
+
+Aqui no tuve ningun problema con los resultados, porque al ser logica matematica, no tiene muchas complicaciones para la IA al contrario de casos mas subjetivos.  
+
+## Entrada 3: 
+
+
+
 
 

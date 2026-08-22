@@ -13,20 +13,13 @@ class FakeAlertRepository:
     _next_id: int = 1
 
     def add(
-        self,
-        sensor_id: str,
-        reading_id: int,
-        value: float,
-        threshold_breached: str,
-        message: str,
+        self, sensor_id: str, reading_id: int, value: float,
+        threshold_breached: str, severity: str, message: str,
     ) -> AlertModel:
         alert = AlertModel(
-            id=self._next_id,
-            sensor_id=sensor_id,
-            reading_id=reading_id,
-            value=value,
-            threshold_breached=threshold_breached,
-            message=message,
+            id=self._next_id, sensor_id=sensor_id, reading_id=reading_id,
+            value=value, threshold_breached=threshold_breached,
+            severity=severity, message=message,
         )
         self._alerts.append(alert)
         self._next_id += 1
@@ -34,7 +27,6 @@ class FakeAlertRepository:
 
     def list_for_sensor(self, sensor_id: str) -> list[AlertModel]:
         return [a for a in self._alerts if a.sensor_id == sensor_id]
-
 
 @dataclass
 class FakeAlertNotifier:
