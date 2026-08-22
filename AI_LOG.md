@@ -222,6 +222,34 @@ Aqui no tuve ningun problema con los resultados, porque al ser logica matematica
 
 ## Entrada 3: 
 
+Aqui tuve que conectar las cosas hechas anteriormente a FastAPI y SQLALchemy, y agregar varias cosas como el manejo global de errores.  
+
+El primer prompt que use fue "Actualiza AnomalyDetectionService para usar determine_severity del
+dominio puro en vez de la logica simple anterior. AlertModel necesita
+un campo severity nuevo."  
+
+El codigo que me dio no encontre problemas en su diseño, los problemas empezaron cuando empezaba a interactuar con otros codigos, errores que corregi con ayuda de los tests de mypy y ruff.  
+
+El segundo prompt que use fue: "Conecta AlertStatus (ya creado ayer) a AlertQueryService: agrega
+change_status(alert_id, new_status) que valide la transición con
+can_transition antes de persistir, y un endpoint PATCH /alerts/{id}."  
+
+La IA me genero codigo que funciona como lo pedi, con el endpoint PATCH devolviendo 409 cuando la transicion es invalidad y 404 si la alerta no existe, aqui no tuve problemas mas que el ruff test que necesitaba cambios.  
+
+El tercer prompt fue "Configura logging en JSON para toda la app (formatter custom), y agrega
+un exception_handler global en FastAPI que convierta cualquier excepcion
+no controlada en un 500 limpio sin exponer el traceback al cliente."  
+
+Me genero un codigo con el cual no tuve ningun problema, contando con el handler global registrado con @app.exception_handler(Exception).  
+
+Y por ultimo promt que use fue "Agrega GET /metrics que devuelva conteos: sensores activos, total de
+lecturas, alertas abiertas. Necesita metodos de conteo nuevos en cada
+repositorio."  
+
+Aqui si tuve que cambiar parte del codigo, ya que verifique y vi que me habia cambiado algunas cosas a la version anterior, usando session.query() (1.x) en lugar de select() (2.x), entonces lo tuve que terminar arreglando.  
+
+## Entrada 4:
+
 
 
 
