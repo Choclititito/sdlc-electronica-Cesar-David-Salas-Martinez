@@ -253,7 +253,13 @@ En este dia decidi hacer la migracion de Alembic, le pedi a la IA, el prompt" Da
 
 La IA me dio una serie de pasos que segui, el problema que me encontre es que no aparecian todas las tablas que deberian, utilice la IA para que me diera posibles soluciones, de las opcciones que me dio la que termine usando y me termino funcionando fue borrar las versiones anteriores de Alembic que tenia de las migraciones pasadas.  
 
-## Entrada 5:
+Tambien cuando estaba usando el docker, hice unas pruebas y me di cuenta que no me estaba registrando los threshold, asi que tuve que checar los codigos y me di cuenta que faltaban partes de la cadena de comunicacion, asi que le pedi ayuda a la IA, para que me dijiera como solucionarlo, la cual me dijo que habia que cambiar algunas partes de varios codigos, yo aceptando sus cambios.  
+
+
+
+## Entrada 5:  
+
+E
 
 
 
