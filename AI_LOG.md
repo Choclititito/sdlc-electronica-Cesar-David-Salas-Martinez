@@ -248,7 +248,12 @@ repositorio."
 
 Aqui si tuve que cambiar parte del codigo, ya que verifique y vi que me habia cambiado algunas cosas a la version anterior, usando session.query() (1.x) en lugar de select() (2.x), entonces lo tuve que terminar arreglando.  
 
-## Entrada 4:
+## Entrada 4:  
+En este dia decidi hacer la migracion de Alembic, le pedi a la IA, el prompt" Dame la serie de pasos para poder hacer la migracion a Alembic de mi proyecto"  
+
+La IA me dio una serie de pasos que segui, el problema que me encontre es que no aparecian todas las tablas que deberian, utilice la IA para que me diera posibles soluciones, de las opcciones que me dio la que termine usando y me termino funcionando fue borrar las versiones anteriores de Alembic que tenia de las migraciones pasadas.  
+
+## Entrada 5:
 
 
 
