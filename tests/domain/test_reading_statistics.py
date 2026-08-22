@@ -1,8 +1,8 @@
 """tests/domain/test_reading_statistics.py
 TDD: escrito antes de app.domain.reading_statistics.
 """
-import pytest
-from app.domain.reading_statistics import compute_statistics, ReadingStatistics
+
+from app.domain.reading_statistics import ReadingStatistics, compute_statistics
 
 
 def test_empty_list_returns_none_stats():

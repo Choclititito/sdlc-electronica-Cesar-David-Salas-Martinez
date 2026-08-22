@@ -2,6 +2,7 @@
 Logica pura: determina la severidad de una lectura respecto a los
 thresholds de su sensor. Sin dependencias de FastAPI/SQLAlchemy.
 """
+
 from enum import Enum
 
 # Que tan lejos del threshold (como fraccion del rango) se considera CRITICAL

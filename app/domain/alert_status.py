@@ -1,6 +1,7 @@
 """domain/alert_status.py
 Logica pura: ciclo de vida de una alerta (maquina de estados simple).
 """
+
 from enum import Enum
 
 

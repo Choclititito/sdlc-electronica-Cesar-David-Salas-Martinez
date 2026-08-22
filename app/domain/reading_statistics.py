@@ -4,6 +4,7 @@ una lista de valores. Sin dependencias de FastAPI/SQLAlchemy — la capa
 de repositorio decide COMO obtener esos valores (idealmente con
 agregacion en BD, no trayendo todas las filas).
 """
+
 from dataclasses import dataclass
 
 

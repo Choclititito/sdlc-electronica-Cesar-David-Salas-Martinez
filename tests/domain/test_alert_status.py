@@ -1,8 +1,8 @@
 """tests/domain/test_alert_status.py
 Test en verde con la logica de dominio de alert_status.py.
 """
-import pytest
-from app.domain.alert_status import AlertStatus, can_transition, InvalidTransitionError
+
+from app.domain.alert_status import AlertStatus, can_transition
 
 
 def test_open_to_acknowledged_is_valid():
