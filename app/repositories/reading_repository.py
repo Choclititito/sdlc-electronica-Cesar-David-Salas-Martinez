@@ -5,7 +5,7 @@ Dia 5 arreglo"""
 from datetime import datetime
 from typing import Protocol
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.models.reading import ReadingModel
@@ -27,6 +27,10 @@ class ReadingRepository(Protocol):
         self, reading_id: int, value: float | None, unit: str | None
     ) -> ReadingModel | None: ...
     def deactivate(self, reading_id: int) -> ReadingModel | None: ...
+    def get_values_for_stats(
+        self, sensor_id: str, date_from: datetime | None, date_to: datetime | None
+    ) -> list[float]: ...
+    def count_all(self) -> int: ...
 
 
 # Implementación del repositorio de lecturas usando SQLAlchemy
@@ -91,3 +95,23 @@ class SqlAlchemyReadingRepository:
         self._session.commit()
         self._session.refresh(reading)
         return reading
+
+    def get_values_for_stats(
+        self, sensor_id: str, date_from: datetime | None, date_to: datetime | None
+    ) -> list[float]:
+        stmt = select(ReadingModel.value).where(
+            ReadingModel.sensor_id == sensor_id, ReadingModel.is_active.is_(True)
+        )
+        if date_from is not None:
+            stmt = stmt.where(ReadingModel.created_at >= date_from)
+        if date_to is not None:
+            stmt = stmt.where(ReadingModel.created_at <= date_to)
+        return list(self._session.scalars(stmt).all())
+
+    def count_all(self) -> int:
+        stmt = (
+            select(func.count())
+            .select_from(ReadingModel)
+            .where(ReadingModel.is_active.is_(True))
+        )
+        return self._session.scalar(stmt) or 0

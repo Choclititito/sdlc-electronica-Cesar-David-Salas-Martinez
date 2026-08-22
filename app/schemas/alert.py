@@ -11,5 +11,11 @@ class AlertOut(BaseModel):
     reading_id: int
     value: float
     threshold_breached: Literal["min", "max"]
+    severity: Literal["warning", "critical"]
+    status: Literal["open", "acknowledged", "resolved"]
     message: str
     created_at: datetime
+
+
+class AlertStatusUpdate(BaseModel):
+    status: Literal["open", "acknowledged", "resolved"]

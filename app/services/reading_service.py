@@ -4,6 +4,7 @@ Dia 5 arreglo - se quita SensorMismatchError, ya no aplica"""
 # Importaciones
 from datetime import datetime
 
+from app.domain.reading_statistics import ReadingStatistics, compute_statistics
 from app.models.reading import ReadingModel
 from app.repositories.reading_repository import ReadingRepository
 from app.services.exceptions import InvalidDateRangeError, ReadingNotFoundError
@@ -97,3 +98,9 @@ class ReadingService:
         if reading is None:
             raise ReadingNotFoundError(f"Lectura {reading_id} no encontrada")
         return reading
+
+    def get_statistics(
+        self, sensor_id: str, date_from: datetime | None, date_to: datetime | None
+    ) -> ReadingStatistics:
+        values = self._repo.get_values_for_stats(sensor_id, date_from, date_to)
+        return compute_statistics(values)

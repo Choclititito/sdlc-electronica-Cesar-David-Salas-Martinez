@@ -18,6 +18,7 @@ class FakeAlertRepository:
         reading_id: int,
         value: float,
         threshold_breached: str,
+        severity: str,
         message: str,
     ) -> AlertModel:
         alert = AlertModel(
@@ -26,6 +27,7 @@ class FakeAlertRepository:
             reading_id=reading_id,
             value=value,
             threshold_breached=threshold_breached,
+            severity=severity,
             message=message,
         )
         self._alerts.append(alert)

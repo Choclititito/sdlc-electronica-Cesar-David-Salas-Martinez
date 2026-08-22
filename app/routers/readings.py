@@ -11,8 +11,14 @@ from app.dependencies import (
     ReadingServiceDep,
     SensorServiceDep,
 )
+from app.domain.reading_statistics import ReadingStatistics
 from app.models.reading import ReadingModel
-from app.schemas.reading import SensorReadingIn, SensorReadingOut, SensorReadingUpdate
+from app.schemas.reading import (
+    ReadingStatsOut,
+    SensorReadingIn,
+    SensorReadingOut,
+    SensorReadingUpdate,
+)
 from app.services.exceptions import (
     InvalidDateRangeError,
     ReadingNotFoundError,
@@ -110,6 +116,23 @@ def delete_reading(reading_id: int, service: ReadingServiceDep) -> None:
     try:
         service.deactivate(reading_id)
     except ReadingNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)
+        ) from exc
+
+
+@router.get("/sensors/{sensor_id}/readings/stats", response_model=ReadingStatsOut)
+def get_reading_stats(
+    sensor_id: str,
+    service: ReadingServiceDep,
+    sensor_service: SensorServiceDep,
+    from_: datetime | None = Query(None, alias="from"),  # noqa: B008
+    to: datetime | None = Query(None),  # noqa: B008
+) -> ReadingStatistics:
+    try:
+        sensor_service.get(sensor_id)
+        return service.get_statistics(sensor_id, from_, to)
+    except SensorNotFoundError as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)
         ) from exc

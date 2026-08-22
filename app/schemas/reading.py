@@ -43,3 +43,10 @@ class SensorReadingOut(BaseModel):
 class SensorReadingUpdate(BaseModel):
     value: float | None = None
     unit: str | None = None
+
+
+class ReadingStatsOut(BaseModel):
+    count: int
+    minimum: float | None
+    maximum: float | None
+    average: float | None

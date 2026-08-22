@@ -30,6 +30,7 @@ from app.services.sensor_service import SensorService
 def get_alert_repository(db: Session = Depends(get_db)) -> AlertRepository:  # noqa: B008
     return SqlAlchemyAlertRepository(db)
 
+
 def get_alert_query_service(
     repo: AlertRepository = Depends(get_alert_repository),  # noqa: B008
 ) -> AlertQueryService:
@@ -42,7 +43,6 @@ def get_reading_repository(db: Session = Depends(get_db)) -> ReadingRepository: 
 
 def get_sensor_repository(db: Session = Depends(get_db)) -> SensorRepository:  # noqa: B008
     return SqlAlchemySensorRepository(db)
-
 
 
 def get_reading_service(
@@ -80,3 +80,5 @@ AlertRepositoryDep = Annotated[AlertRepository, Depends(get_alert_repository)]
 AnomalyDetectionServiceDep = Annotated[
     AnomalyDetectionService, Depends(get_anomaly_detection_service)
 ]
+SensorRepositoryDep = Annotated[SensorRepository, Depends(get_sensor_repository)]
+ReadingRepositoryDep = Annotated[ReadingRepository, Depends(get_reading_repository)]

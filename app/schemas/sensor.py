@@ -18,6 +18,9 @@ class SensorIn(BaseModel):
     sensor_id: str = Field(..., examples=["TEMP-01"])
     sensor_type: SensorType
     unit: str = Field(..., examples=["C"])
+    location: str | None = None
+    min_threshold: float | None = None
+    max_threshold: float | None = None
 
     # Validaciones de unidad
     @field_validator("unit")
@@ -38,6 +41,17 @@ class SensorIn(BaseModel):
             )
         return self
 
+    # Validacion: min_threshold no puede ser mayor que max_threshold
+    @model_validator(mode="after")
+    def thresholds_must_be_consistent(self) -> "SensorIn":
+        if (
+            self.min_threshold is not None
+            and self.max_threshold is not None
+            and self.min_threshold > self.max_threshold
+        ):
+            raise ValueError("min_threshold no puede ser mayor que max_threshold")
+        return self
+
 
 # Aqui definimos un modelo de datos para la salida de un sensor
 class SensorOut(SensorIn):
@@ -51,3 +65,6 @@ class SensorOut(SensorIn):
 class SensorUpdate(BaseModel):
     sensor_type: SensorType | None = None
     unit: str | None = None
+    location: str | None = None
+    min_threshold: float | None = None
+    max_threshold: float | None = None

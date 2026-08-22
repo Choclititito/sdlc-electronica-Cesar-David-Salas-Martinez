@@ -195,5 +195,73 @@ La IA me paso varios tests y los codigos que le pedi, tenian errores que evitaba
 En este dia verificamos lo que tuvimos que hacer fue revisar el PR de nuestro compañero, primero nosotros, y luego pedirle ayuda a la IA, lo que note fue como la IA ayuda mucho a encontrar fallos mas centrados en el codigo, mientras que no puede checar tanto errores verificables en el servidor montado, ya que no tiene la capacidad de poder hacer un servidor propio para poder verificarlo, tambien es mas facil para mi tener criterio si se entiende la descripccion o titulo del PR, ya que una inteligencia artificial, casi siempre va a tener errores de redaccion, y va complicado que sepa si es entendible para un humano.
 
 
+# Semana 6 PROYECTO  
+
+## Entrada 1:  
+En la primera entrada, le pregunte a la IA basandose en las instrucciones el siguiente prompt "Basandote en esta lista de requisitos, en cuales puntos no tengo todo completado", adjuntando las 2 listas de requisitos, para asi tener una lista de cosas que me podrian faltar, me termino dando varios puntos que le faltaban a mi proyecto, los cuales en su mayoria accedi a hacer.  
+
+## Entrada 2:  
+Le di el prompt: "Necesito una funcion pura determine_severity(value, min_threshold,
+max_threshold) que devuelva WARNING o CRITICAL segun que tan lejos esta
+el valor del threshold, o None si esta en rango. Sigue TDD: dame primero
+los tests, sin implementacion todavia."  
+
+Me genero varios tests, los cuales funcionaron como deberian, saliendo con resultados rojos.  
+
+Luego tuve que usar un prompt que indicaba : "Diseña un Enum AlertStatus (open, acknowledged, resolved) y una funcion
+can_transition(current, target) que valide transiciones. resolved debe
+ser terminal. Dame los tests primero, TDD estricto."  
+
+Me dio los tests , de los cuales no tuve que cambiar mucho, mas que algunos detalles como el permitir el caso de open a resolved, ya que un usuario podria resolver una alerta sin necesidad de reconocerla, y ya sabe la causa.  
+
+y por ultimo prompt utilice: "Funcion pura compute_statistics(values: list[float]) que devuelva
+count/min/max/average. Lista vacia -> todo None excepto count=0.
+Redondea average a 2 decimales. TDD: tests primero."  
+
+Aqui no tuve ningun problema con los resultados, porque al ser logica matematica, no tiene muchas complicaciones para la IA al contrario de casos mas subjetivos.  
+
+## Entrada 3: 
+
+Aqui tuve que conectar las cosas hechas anteriormente a FastAPI y SQLALchemy, y agregar varias cosas como el manejo global de errores.  
+
+El primer prompt que use fue "Actualiza AnomalyDetectionService para usar determine_severity del
+dominio puro en vez de la logica simple anterior. AlertModel necesita
+un campo severity nuevo."  
+
+El codigo que me dio no encontre problemas en su diseño, los problemas empezaron cuando empezaba a interactuar con otros codigos, errores que corregi con ayuda de los tests de mypy y ruff.  
+
+El segundo prompt que use fue: "Conecta AlertStatus (ya creado ayer) a AlertQueryService: agrega
+change_status(alert_id, new_status) que valide la transición con
+can_transition antes de persistir, y un endpoint PATCH /alerts/{id}."  
+
+La IA me genero codigo que funciona como lo pedi, con el endpoint PATCH devolviendo 409 cuando la transicion es invalidad y 404 si la alerta no existe, aqui no tuve problemas mas que el ruff test que necesitaba cambios.  
+
+El tercer prompt fue "Configura logging en JSON para toda la app (formatter custom), y agrega
+un exception_handler global en FastAPI que convierta cualquier excepcion
+no controlada en un 500 limpio sin exponer el traceback al cliente."  
+
+Me genero un codigo con el cual no tuve ningun problema, contando con el handler global registrado con @app.exception_handler(Exception).  
+
+Y por ultimo promt que use fue "Agrega GET /metrics que devuelva conteos: sensores activos, total de
+lecturas, alertas abiertas. Necesita metodos de conteo nuevos en cada
+repositorio."  
+
+Aqui si tuve que cambiar parte del codigo, ya que verifique y vi que me habia cambiado algunas cosas a la version anterior, usando session.query() (1.x) en lugar de select() (2.x), entonces lo tuve que terminar arreglando.  
+
+## Entrada 4:  
+En este dia decidi hacer la migracion de Alembic, le pedi a la IA, el prompt" Dame la serie de pasos para poder hacer la migracion a Alembic de mi proyecto"  
+
+La IA me dio una serie de pasos que segui, el problema que me encontre es que no aparecian todas las tablas que deberian, utilice la IA para que me diera posibles soluciones, de las opcciones que me dio la que termine usando y me termino funcionando fue borrar las versiones anteriores de Alembic que tenia de las migraciones pasadas.  
+
+Tambien cuando estaba usando el docker, hice unas pruebas y me di cuenta que no me estaba registrando los threshold, asi que tuve que checar los codigos y me di cuenta que faltaban partes de la cadena de comunicacion, asi que le pedi ayuda a la IA, para que me dijiera como solucionarlo, la cual me dijo que habia que cambiar algunas partes de varios codigos, yo aceptando sus cambios.  
+
+
+
+## Entrada 5:  
+
+E
+
+
+
 
 

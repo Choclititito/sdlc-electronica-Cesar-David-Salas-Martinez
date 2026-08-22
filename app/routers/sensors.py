@@ -29,7 +29,14 @@ def list_sensors(
 @router.post("", response_model=SensorOut, status_code=status.HTTP_201_CREATED)
 def create_sensor(sensor: SensorIn, service: SensorServiceDep) -> SensorModel:
     try:
-        return service.register(sensor.sensor_id, sensor.sensor_type.value, sensor.unit)
+        return service.register(
+            sensor.sensor_id,
+            sensor.sensor_type.value,
+            sensor.unit,
+            sensor.location,
+            sensor.min_threshold,
+            sensor.max_threshold,
+        )
     except SensorAlreadyExistsError as exc:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail=str(exc)
@@ -70,3 +77,6 @@ def delete_sensor(sensor_id: str, service: SensorServiceDep) -> None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)
         ) from exc
+
+
+
