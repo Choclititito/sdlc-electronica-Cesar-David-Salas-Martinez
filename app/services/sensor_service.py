@@ -15,11 +15,21 @@ class SensorService:
         self._repo = repo
         # Registra un nuevo sensor en la base de datos, si ya existe lanza una excepcion
 
-    def register(self, sensor_id: str, sensor_type: str, unit: str) -> SensorModel:
+    def register(
+        self,
+        sensor_id: str,
+        sensor_type: str,
+        unit: str,
+        location: str | None = None,
+        min_threshold: float | None = None,
+        max_threshold: float | None = None,
+    ) -> SensorModel:
         if self._repo.get_by_sensor_id(sensor_id) is not None:
             raise SensorAlreadyExistsError(f"El sensor '{sensor_id}' ya existe")
-        return self._repo.add(sensor_id, sensor_type, unit)
-        # Obtiene un sensor por su id, si no existe lanza una excepcion
+        return self._repo.add(
+            sensor_id, sensor_type, unit, location, min_threshold, max_threshold
+        )
+
 
     def get(self, sensor_id: str) -> SensorModel:
         sensor = self._repo.get_by_sensor_id(sensor_id)
@@ -46,3 +56,4 @@ class SensorService:
         if sensor is None:
             raise SensorNotFoundError(f"Sensor '{sensor_id}' no encontrado")
         return sensor
+

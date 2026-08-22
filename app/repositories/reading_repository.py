@@ -109,6 +109,9 @@ class SqlAlchemyReadingRepository:
         return list(self._session.scalars(stmt).all())
 
     def count_all(self) -> int:
-        stmt = select(func.count()).select_from(ReadingModel).where(
-            ReadingModel.is_active.is_(True))
+        stmt = (
+            select(func.count())
+            .select_from(ReadingModel)
+            .where(ReadingModel.is_active.is_(True))
+        )
         return self._session.scalar(stmt) or 0

@@ -93,8 +93,11 @@ class SqlAlchemyAlertRepository:
         self._session.commit()
         self._session.refresh(alert)
         return alert
-    
+
     def count_open(self) -> int:
-        stmt = select(func.count()).select_from(AlertModel).where(
-            AlertModel.status == "open")
+        stmt = (
+            select(func.count())
+            .select_from(AlertModel)
+            .where(AlertModel.status == "open")
+        )
         return self._session.scalar(stmt) or 0
