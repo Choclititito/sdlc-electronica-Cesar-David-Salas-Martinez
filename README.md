@@ -63,6 +63,10 @@ Cada push a `main` dispara automáticamente un nuevo build y despliegue en Rende
 
 El commit que actualizó la versión de la API a 1.0.1 disparó este redeploy automático sin intervención manual, visible en el dashboard de Render.  
 
+## Video explicatorio
+
+https://youtu.be/Pi8LMbmCtWE  
+
 ## Arquitectura
 
 ### Capas del sistema
@@ -129,4 +133,6 @@ sequenceDiagram
     end
     AD-->>R: (sin retorno bloqueante)
     R-->>C: 201 Created (la lectura)
+
+
 
