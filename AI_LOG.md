@@ -255,7 +255,7 @@ La IA me dio una serie de pasos que segui, el problema que me encontre es que no
 
 Tambien cuando estaba usando el docker, hice unas pruebas y me di cuenta que no me estaba registrando los threshold, asi que tuve que checar los codigos y me di cuenta que faltaban partes de la cadena de comunicacion, asi que le pedi ayuda a la IA, para que me dijiera como solucionarlo, la cual me dijo que habia que cambiar algunas partes de varios codigos, yo aceptando sus cambios.  
 
-
+Por el mismo cambios de versiones anteriores de bases de datos, tuve problemas con subir el commit al render, pero con ayuda de la IA, pude borrar estas versiones que estaban causando errores.
 
 ## Entrada 5:  
 
