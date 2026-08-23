@@ -63,3 +63,70 @@ Cada push a `main` dispara automáticamente un nuevo build y despliegue en Rende
 
 El commit que actualizó la versión de la API a 1.0.1 disparó este redeploy automático sin intervención manual, visible en el dashboard de Render.  
 
+## Arquitectura
+
+### Capas del sistema
+
+```mermaid
+flowchart LR
+    Client[Cliente HTTP] --> Router
+
+    subgraph API["app/routers"]
+        Router[sensors / readings / alerts]
+    end
+
+    subgraph Logic["app/services"]
+        Service[SensorService / ReadingService /
+        AlertQueryService / AnomalyDetectionService]
+    end
+
+    subgraph Domain["app/domain (logica pura, sin FastAPI/SQLAlchemy)"]
+        Dom[alert_severity / alert_status /
+        reading_statistics]
+    end
+
+    subgraph Data["app/repositories"]
+        Protocol["Protocol (interfaz)"]
+        Impl[SqlAlchemy Implementation]
+    end
+
+    subgraph Storage["app/models"]
+        Model[(PostgreSQL / SQLite)]
+    end
+
+    Router --> Service
+    Service --> Dom
+    Service --> Protocol
+    Protocol -.DIP.-> Impl
+    Impl --> Model
+```
+
+### Flujo: creación de lectura y detección de anomalías
+
+```mermaid
+sequenceDiagram
+    participant C as Cliente
+    participant R as reading_router
+    participant RS as ReadingService
+    participant AD as AnomalyDetectionService
+    participant Dom as alert_severity (dominio puro)
+    participant AR as AlertRepository
+    participant N as AlertNotifier (OCP)
+    participant DB as PostgreSQL
+
+    C->>R: POST /sensors/{id}/readings
+    R->>RS: record_for_sensor(value, unit)
+    RS->>RS: validate_physics()
+    RS->>DB: guarda la lectura
+    R->>AD: evaluate(sensor_id, reading_id, value)
+    AD->>Dom: determine_severity(value, min, max)
+    Dom-->>AD: WARNING / CRITICAL / None
+    alt severidad detectada
+        AD->>AR: add(alerta con severity y status=open)
+        AR->>DB: guarda la alerta
+        AD->>N: notify(alerta)
+        N-->>AD: log estructurado JSON
+    end
+    AD-->>R: (sin retorno bloqueante)
+    R-->>C: 201 Created (la lectura)
+
